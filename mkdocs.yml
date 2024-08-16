@@ -1,3 +1,9 @@
-site_name: My Docs
+site_name: A Memo
+site_description: a memo for storing notes
+
 theme:
   name: material
+
+plugins:
+  - search
+  - blcg
