@@ -1,9 +1,66 @@
 site_name: A Memo
 site_description: a memo for storing notes
+site_author: Zhazi
 
 theme:
   name: material
+  language: zh
+  font: false
+  palette:
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 切换至深色模式
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: 切换至浅色模式
 
-plugins:
-  - search
-  - blcg
+  features:
+    - content.action.edit
+    - content.action.view
+    - content.code.copy
+    - content.tooltips
+    - navigation.footer
+    - navigation.indexes
+    - navigation.top
+    - navigation.tracking
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - footnotes
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.superfences
+  - markdown.extensions.def_list
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_css:
+  - 'css/extra.css'
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+    - 零：论文相关:
+      - 00_read_paper/index.md
+      - 三维重建相关: 
+        - 占据网络: 00_read_paper/3D_Reconstruction/occupancy_network.md
+    - 一：学习 GO:
+      - 01_learn_go/basic.md 
+    - 二：杂项:
+      - 水密网格: 02_misc/watertight_mesh.md
+    
+
