@@ -39,6 +39,9 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.keys
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
   - pymdownx.superfences
   - markdown.extensions.def_list
   - toc:
@@ -62,5 +65,6 @@ nav:
       - 01_learn_go/basic.md 
     - 二：杂项:
       - 水密网格: 02_misc/watertight_mesh.md
+      - 记一道洛谷题: 02_misc/luogu_U207568.md
     
 
