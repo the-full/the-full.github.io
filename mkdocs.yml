@@ -48,6 +48,13 @@ markdown_extensions:
       permalink: true
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 extra_css:
   - 'css/extra.css'
@@ -59,12 +66,16 @@ extra_javascript:
 nav:
     - 零：论文相关:
       - 00_read_paper/index.md
-      - 三维重建相关: 
+      - 三维重建: 
         - 占据网络: 00_read_paper/3D_Reconstruction/occupancy_network.md
+      - 多任务学习:
+        - GradCraft: 00_read_paper/Multi-task_Learning/GradCraft.md
     - 一：学习 GO:
       - 01_learn_go/basic.md 
     - 二：杂项:
       - 水密网格: 02_misc/watertight_mesh.md
       - 记一道洛谷题: 02_misc/luogu_U207568.md
+    - 三：数据集:
+      - ModelNet40: 03_dataset/modelnet40.md
     
 
