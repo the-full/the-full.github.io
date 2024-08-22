@@ -13,7 +13,7 @@
 !!! abstract "导言"
 
     逛知乎时遇到的这篇论文的介绍，感觉能用到我的任务中，因此这里记录一下。在多任务学习中，每个 task 都将给出一个梯度，在更新时需要将所有 task 给出的梯度进行聚合，确定一个最终的梯度进行更新。之前研究在聚合梯度时，对梯度大小和梯度方向的处理存在不足，论文针对这一不足提出了一种动态调整梯度（包括大小和方向）的聚合方法 GradCraft。本文只关注两个问题：
-    
+
     1. GradCraft 算法流程？
     2. 代码如何与算法对应？
 
@@ -24,7 +24,7 @@
 ??? info "梯度聚合策略简介"
 
     看代码的时候遇到了很多看不懂的名称，问了 ai 发现是梯度聚合策略的名称，故补充此节。
-    
+
     | 方法名称       | 描述                                                         |
     |----------------|--------------------------------------------------------------|
     | **gradcraft** | 本篇论文方法 |
@@ -68,7 +68,7 @@ $$
 G_{i}=[\hat{g}_{i_{1}},\cdot\cdot\cdot,\hat{g}_{i_{n}}]\in\mathbb{R}^{n\times d}.
 $$
 
-其中，$g_{i_j}$ 表示第 $i$ 个梯度的第 $j$ 个**冲突梯度**。GradCraft 使用投影来确保其梯度不会与其他任务的梯度冲突，投影目标是找到一个不会与 $G_i$ 中任一梯度冲突的**去冲突梯度梯度**  $\widetilde g_i$，其满足下面的等式：
+其中，$g_{i_j}$ 表示第 $i$ 个梯度的第 $j$ 个**冲突梯度**。GradCraft 使用投影来确保其梯度不会与其他任务的梯度冲突，投影目标是找到一个不会与 $G_i$ 中任一梯度冲突的**去冲突梯度梯度** $\widetilde g_i$，其满足下面的等式：
 
 $$
 G_{i}\widetilde{g_{i}}=z,
@@ -98,7 +98,7 @@ $$
 
 ![GradCraft 是一种聚合梯度的方法](./images/GradCraft-聚合梯度示意图.png)
 
-## 代码分析 
+## 代码分析
 
 涉及到对梯度的操作，自然要考虑一下优化器的处理。基于加权的方法通常在求损失时进行加权从而避免了对梯度的直接操作，进而避免了对优化器的额外设置。相反，涉及梯度方向的方法就不得不对优化器进行额外的设置了，看仓库代码的思路应该是给优化器上一层包装，通过一个自定义 `backward` 过程接管梯度的计算。见代码路径 `GradCraft/models/basemodel.py` 的 287 行:
 
@@ -115,7 +115,7 @@ optim = customized_optimizer(method=method, optimizer=optim, num_tasks=self.num_
 
 在这里给优化器加了一层包装，然后是 394 行开始：
 
-```python linenums="394" hl_lines="5" title="basemodel.py"
+```python linenums="394" hl_lines="4" title="basemodel.py"
   y_pred = model(x).squeeze()
   loss_list = [loss_func[i](y_pred[:, i], y[:, i], reduction='mean') for i in range(self.num_tasks)]
 
@@ -149,12 +149,12 @@ def backward(self, objectives):
 
 可以看到，第 55 行进行了量级调整，第 57 行进行了冲突消解，这与我们在论文中读的的内容一致。那么我们进一步深入 `_project_conflicting` 方法一探究竟。见同文件 103 行：
 
-``` python linenums="103", hl_lines="12-20" title=“global_pc_grad_magnitude_positive.py”
+```python linenums="103", hl_lines="12-20" title=“global_pc_grad_magnitude_positive.py”
     def _project_conflicting(self, grads, has_grads):
         shared = torch.stack(has_grads).prod(0).bool()
         grads = torch.stack(grads)
         num_task = len(grads)
-        
+
         def proj_one(g):
             inner_products = torch.sum(g * grads, dim = -1)
             negative_indices = torch.where(inner_products < 0.)[0]
