@@ -1,5 +1,7 @@
 # GradCraft: Elevating Multi-task Recommendations through Holistic Gradient Crafting
 
+!!! success "本文已经成稿，预计不会有大的改动。"
+
 ??? info "论文基本信息"
 
     - 论文链接：[arxiv](https://arxiv.org/abs/2407.19682)
@@ -11,7 +13,7 @@
 !!! abstract "导言"
 
     逛知乎时遇到的这篇论文的介绍，感觉能用到我的任务中，因此这里记录一下。在多任务学习中，每个 task 都将给出一个梯度，在更新时需要将所有 task 给出的梯度进行聚合，确定一个最终的梯度进行更新。之前研究在聚合梯度时，对梯度大小和梯度方向的处理存在不足，论文针对这一不足提出了一种动态调整梯度（包括大小和方向）的聚合方法 GradCraft。本文只关注两个问题：
-
+    
     1. GradCraft 算法流程？
     2. 代码如何与算法对应？
 
@@ -22,7 +24,7 @@
 ??? info "梯度聚合策略简介"
 
     看代码的时候遇到了很多看不懂的名称，问了 ai 发现是梯度聚合策略的名称，故补充此节。
-
+    
     | 方法名称       | 描述                                                         |
     |----------------|--------------------------------------------------------------|
     | **gradcraft** | 本篇论文方法 |
@@ -96,7 +98,7 @@ $$
 
 ![GradCraft 是一种聚合梯度的方法](./images/GradCraft-聚合梯度示意图.png)
 
-## 代码分析 （TODO)
+## 代码分析 
 
 设计到对梯度的操作，自然要考虑一下优化器的处理。基于加权的方法通常在求损失时进行加权从而避免了对梯度的直接操作，进而避免了对优化器的额外设置。而设计梯度方向的方法就不得不对优化器进行额外的设置，论文代码的思路应该是给优化器上一层包装，通过一个自定义 `backward` 过程接管梯度的计算。见代码路径 `GradCraft/models/basemodel.py` 的 287 行:
 
@@ -121,9 +123,9 @@ optim = customized_optimizer(method=method, optimizer=optim, num_tasks=self.num_
   optim.step()
 ```
 
-使用自定义的 `backward` 方法接管方向传播过程。该方法在 `GradCraft/solvers/pc_grad_magnitude_positive.py` 中定义，见 42 行：
+使用自定义的 `backward` 方法接管方向传播过程。该方法在 `GradCraft/solvers/global_pc_grad_magnitude_positive.py` 中定义，见 42 行：
 
-```python linenums="42", hl_lines="14 16", title="pc_grad_magnitude_positive.py"
+```python linenums="42", hl_lines="14 16", title="global_pc_grad_magnitude_positive.py"
 def backward(self, objectives):
     '''
     calculate the gradient of the parameters
@@ -145,4 +147,29 @@ def backward(self, objectives):
     return
 ```
 
-可以看到，第 55 行进行了量级调整，第 57 行进行了冲突消解，这与我们在论文中读的的内容一致，l那么接下来我们深入 `_project_conflicting` 方法一探究竟。(TODO)
+可以看到，第 55 行进行了量级调整，第 57 行进行了冲突消解，这与我们在论文中读的的内容一致，那么接下来我们深入 `_project_conflicting` 方法一探究竟。见同文件 103 行：
+
+``` python linenums="103", hl_lines="12-20" title=“global_pc_grad_magnitude_positive.py”
+    def _project_conflicting(self, grads, has_grads):
+        shared = torch.stack(has_grads).prod(0).bool()
+        grads = torch.stack(grads)
+        num_task = len(grads)
+        
+        def proj_one(g):
+            inner_products = torch.sum(g * grads, dim = -1)
+            negative_indices = torch.where(inner_products < 0.)[0]
+            if len(negative_indices) == 0:
+                return g
+            else:
+                G = torch.gather(input=grads, index=negative_indices.unsqueeze(1).expand(-1, grads.size(1)), dim=0)
+                left = torch.matmul(G, G.T)
+                right = -torch.matmul(G, g.unsqueeze(1))
+                conflict_norm = torch.norm(G, dim=1)
+                right_extra = (self.e * g.norm() * conflict_norm).unsqueeze(1)
+                right = right + right_extra
+                conflict_weights = torch.matmul(torch.inverse(left), right)
+                res = torch.matmul(G.T, conflict_weights).squeeze(-1)
+                return g + res
+```
+
+代码写的很直白，在函数 `proj_one` 中依据前面推导的两个公式对冲突梯度进行消解。至此，所提出的算法与代码完全对应上了，本文的目标完成。
