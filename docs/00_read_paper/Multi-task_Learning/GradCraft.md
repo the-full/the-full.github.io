@@ -149,7 +149,7 @@ def backward(self, objectives):
 
 可以看到，第 55 行进行了量级调整，第 57 行进行了冲突消解，这与我们在论文中读的的内容一致。那么我们进一步深入 `_project_conflicting` 方法一探究竟。见同文件 103 行：
 
-```python linenums="103", hl_lines="12-20" title=“global_pc_grad_magnitude_positive.py”
+```python linenums="103", hl_lines="12-20" title="global_pc_grad_magnitude_positive.py"
     def _project_conflicting(self, grads, has_grads):
         shared = torch.stack(has_grads).prod(0).bool()
         grads = torch.stack(grads)
