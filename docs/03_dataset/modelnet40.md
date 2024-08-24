@@ -2,7 +2,7 @@
 
 !!! Abstract "导言"
 
-    ModelNet40 是三维对抗攻防中一个非常常用的数据集，绝大多数方法都会在该数据集上进行评估。然而，在阅读相关论文时，会发现这个数据集有很多变体，通常是前人工作中预处理过后的版本，这导致论文（代码）中提到 ModelNet40 数据集时往往带有多意性。另一方面，最近尝试复现的点云对抗防御方法 **IF-Defense** ，需要在 ModelNet40 的基础上构建一个变体数据集，但在运行作者的脚本时遇到问题，需要梳理一下它的构建细节，因此，在这里对 ModelNet40 的各种变体和构建细节进行记录。本文将忽略数据集的存储细节也不会包括如何实现 DataSet 类来读取数据的内容。
+    ModelNet40 是三维对抗攻防中一个非常常用的数据集，绝大多数方法都会在该数据集上进行评估。然而，在阅读相关论文时，会发现这个数据集有很多变体，通常是前人工作中预处理过后的版本，这导致论文（代码）中提到 ModelNet40 数据集时往往带有多意性。另一方面，最近尝试复现的点云对抗防御方法 **IF-Defense** ，需要在 ModelNet40 的基础上构建一个变体数据集，但在运行作者的脚本时遇到问题，需要梳理一下它的构建细节。因此，在这里对 ModelNet40 的各种变体和构建细节进行记录。本文将忽略数据集的存储细节也不会包括如何实现 DataSet 类来读取数据的内容。
 
 ## Root: ModelNet
 
@@ -70,7 +70,7 @@ ModelNet 的[官网](https://modelnet.cs.princeton.edu/) 包含两个版本：Mo
 
 ## Version 3: ModelNet10 250 Sample
 
-## Version 4：ModelNet40 with Watertight Mesh
+## Version 4：ModelNet40 for Onet
 
 该版本来自于三维对抗的一项防御方法 `IF-Defense`（[github 链接](https://github.com/Wuziyi616/IF-Defense/tree/main)），作者需要训练一个能将点云转化为网格的网络，该网络来自于 `Occupancy Network`（[github 链接](https://github.com/autonomousvision/occupancy_networks)）, 训练时的监督信号是：空间的中的某一点在模型的内部还是外部（参考 [占据网格](../00_read_paper/3D_Reconstruction/occupancy_network.md)），因此需要保证训练使用的曲面是封闭的也即水密网格。 `IF-Defense` 的作者参考了这个 [issue](https://github.com/autonomousvision/occupancy_networks/issues/27) 使用 `Manifold` （[github 链接](https://github.com/hjwdzh/Manifold)）来将网格转化为水密网格，从而规避了一些额外的预处理步骤。
 
@@ -81,49 +81,31 @@ ModelNet 的[官网](https://modelnet.cs.princeton.edu/) 包含两个版本：Mo
 作者提供了他创建数据集过程中使用的脚本，但这些脚本只存在硬编码路径、无法直接组合使用的问题，见 `IF-Defense/ONet/data_proc/build.sh` 第 47 行：
 
 ```bash linenums="47" hl_lines="3" title="build.sh"
-
 # mave meshes processed by Manifold to current folder
-
 echo "Move watertight meshes to in_folder"
-
 cp /home/wzw/WZY/SUMMER/Manifold/data/MN40_watertight/$c/*.off $build_path_c/2_watertight
-
 ```
 
 需要先创建水密网格，而在 `IF-Defense/ONet/data_proc/make_watertight.py` 第 46 行：
 
-```python linenums="45" hl_lines="3" title="make_watertight.py"
-
+```python linenums="45" hl_lines="2" title="make_watertight.py"
 for one_class in all_class:
-
     class_root = os.path.join(data_root, one_class, '0_in')
-
     all_file = os.listdir(class_root)
-
     all_file.sort()
-
 ```
 
 这里对 `data_root` 中每个类别文件夹下的 `0_in` 进行操作，而不考虑手工创建时，这个文件夹会在 `build.sh` 的第 11 行创建：
 
 ```bash linenums="11" hl_lines="1" title="build.sh"
-
 mkdir -p $build_path_c/0_in \
-
-          $build_path_c/1_scaled \
-
-          $build_path_c/1_transform \
-
-          $build_path_c/2_depth \
-
-          $build_path_c/2_watertight \
-
-          $build_path_c/4_points \
-
-          $build_path_c/4_pointcloud \
-
-          $build_path_c/4_watertight_scaled \
-
+         $build_path_c/1_scaled \
+         $build_path_c/1_transform \
+         $build_path_c/2_depth \
+         $build_path_c/2_watertight \
+         $build_path_c/4_points \
+         $build_path_c/4_pointcloud \
+         $build_path_c/4_watertight_scaled \
 ```
 
 所以，在没有人工介入时，即使调整好路径设置也会面临 `build.sh` 和 `make_watertight.py` 循环依赖的问题，此外，`build.sh` 中也没有给出 `0_in` 文件夹下文件的创建过程。
@@ -140,4 +122,19 @@ mkdir -p $build_path_c/0_in \
 
 ![Onet-ModelNet40 构建流程图](./images/Onet-ModelNet40 构建流程图.png)
 
-#### 重整：一个完整的构建过程（TODO）
+#### 重整：一个完整的构建过程
+
+三个核心脚本的运行依赖于`Manifold` 和几个 `python` 文件，后者除了依赖第三方包还依赖于 `Occupancy Networks` 作者写的 `im2mesh` 包，需要运行 `setup.py` 脚本安装。此外，还需要下载相应数据集并在 `config.sh` 中进行正确的配置。
+
+配置完成后，先进行水密曲面的生成，然后在和原来一样依次运行 `build.sh` 和 `install.sh` 脚本，也可以将生成部分合并到 `build.sh` 中，反正按流程来就行。水密曲面的生成在 `IF-Defense` 作者提供的 `make_watertight.py` 脚本上稍微改改就行，不做赘述。
+
+??? tip "安装 im2mesh"
+
+    简单来说，整个安装过程就是两步：
+
+     - python setup.py build_ext --inplace
+     - python install
+
+    这两行命令起到的效果就是依次编译 `im2mesh.utils` 下的 `libxxx` 文件并构建相应模块，`--inplace` 指定动态链接库放在 `libxxx` 本身的文件夹下，之后可以使用 python 调用相关接口。需要注意的是，`sample_mesh.py` 中使用的 `libmesh` 没有出现在 `IF-Defense` 作者提供的 `im2mesh` 中，可能作者使用其他方法替代了 `check_mesh_contains` 函数（我对这个不太了解），因此这里需要从原仓库中借过来这部分代码（`setup.py` 脚本也要补充）。
+
+    最后讨论一下 `sample_mesh.py` 中的第 9 行的 TODO 怎么进行。按原来的 `setup.py` 脚本安装的话， `libmesh` 中其实并不包含 `check_mesh_contains` 函数，只有编译构建的模块 `triangle_hash`，或者说 `check_mesh_contains` 函数没有被 "安装"。作者的解决方案是硬编码包搜索路径，拓展 `PYTHONPATH` 从而可以找到这个函数。这个方案的问题是 `sample_mesh.py` 和 `im2mesh` 的相对位置被硬编码，产生了不必要的耦合。解决方法也挺简单，这个问题产生的原因是 `setup.py` 中只指明了 `libmesh.triangle_hash` 是一个模块，而没有指明 `libmesh` 是一个包，因此只需要在 `setup.py` 的 `setup` 函数中增加一行 `packages=find_packages()` 让程序发现 `libmesh` 是一个包再重新安装就可以了。
