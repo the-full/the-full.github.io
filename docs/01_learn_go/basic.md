@@ -131,7 +131,7 @@ func (param *amSName)funcName(param1 Type1, param2 Type2, ...) (return1 Type3, .
 - 鸭子类型，实现了所有方法，那就是可以视为对应类型。
 - 接口定义了一组方法的集合，接口是一个类型，但不能被实例化。
 
-```go title="示例":
+```go title="示例"
 type Person interface {
  getName() string
 }
@@ -139,4 +139,78 @@ type Person interface {
 
 实现了 getName，那么该变量就是 Person 接口
 
-## 并发编程(TODO)
+## 并发编程
+
+### goroutine
+
+- `goroutine` 是一种轻量级线程，由 Go 运行时（runtime）管理。
+- `goroutine` 的栈内存初始很小，在需要时可以动态地伸缩。
+- 通过在函数调用前加上 `go` 关键字来启动一个新的 `goroutine`。
+- `goroutine` 默认的调度是由 Go 运行时非抢占式地完成的
+
+### channel
+
+- channel 提供了一种在多个 goroutine 之间传递值的方式。
+- 定义 channel 需要指定元素类型
+- 使用 `<-` 操作符发送（chan <- value）和接收（value <- chan）数据。
+- 默认情况下，发送和接收操作是阻塞的，这提供了自然的同步机制。
+- 发送者可以通过 close(chan) 来关闭一个 channel
+
+### sync
+
+- sync 是 go 中的一个包，提供了一些用于 goroutine 同步的组件
+- 常用的组件有：互斥锁（Mutex）、读写锁（RWMutex）、等待组（WaitGroup）
+- 等待组是一种信号量机制
+
+??? info "一个简单的示例"
+
+    ```go title="main.go" linenums="1"
+    package main
+
+    import (
+        "fmt"
+        "sync"
+        "time"
+    )
+
+    // 共享资源
+    var count int
+
+    // 互斥锁，用于保护共享资源
+    var mutex sync.Mutex
+
+    // 读写锁，用于保护共享资源
+    var rwMutex sync.RWMutex
+
+    func worker(id int) {
+        // 使用互斥锁保护共享资源
+        mutex.Lock()
+        count++
+        fmt.Printf("Worker %d is working, count: %d\n", id, count)
+        mutex.Unlock()
+
+        // 模拟耗时工作
+        time.Sleep(time.Second)
+
+        // 使用读写锁保护共享资源
+        rwMutex.RLock()
+        fmt.Printf("Worker %d is reading count: %d\n", id, count)
+        rwMutex.RUnlock()
+
+        wg.Done()
+    }
+
+    func main() {
+        var wg sync.WaitGroup
+
+        // 启动多个工作 goroutine
+        for i := 1; i <= 3; i++ {
+            wg.Add(1)
+            go worker(i)
+        }
+
+        // 等待所有工作 goroutine 完成
+        wg.Wait()
+        fmt.Println("All workers are done")
+    }
+    ```
