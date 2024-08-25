@@ -214,3 +214,61 @@ type Person interface {
         fmt.Println("All workers are done")
     }
     ```
+
+## 单元测试
+
+- 通常使用 testing 包
+- 测试文件的命名规范是 被测试文件名 + '\_test.go'
+- 通常把被测试文件和测试文件放在导在同一个包下，这样测试函数可以直接访问被测试函数
+
+??? note "testing 包"
+
+    `testing` 包提供了编写和运行 Go 语言测试代码所需的结构和函数。主要包括：
+
+    1. **测试函数的框架**：定义了如何命名和编写测试函数（如 `TestXxx`）。
+    2. **测试日志和报告**：提供了 `t.Errorf`、`t.Fatalf` 和 `t.Logf` 等函数，用于记录测试错误、失败和日志信息。
+    3. **测试覆盖率分析**：支持通过 `go test -cover` 命令分析测试覆盖率。
+    4. **测试参数和辅助函数**：提供了处理测试参数和设置测试环境的功能。
+
+    这些功能使得在 Go 语言中编写和运行测试变得更加方便和高效。
+
+??? info "一个简单的示例"
+
+    被测文件:
+    ``` go title="mypackage.go" linenums="1"
+    package mypackage
+
+    // Add takes two integers and returns the sum.
+    func Add(a, b int) int {
+        return a + b
+    }
+    ```
+
+    测试文件:
+    ``` go title="mypackage_test.go" linenums="1"
+    package mypackage
+
+    import "testing"
+
+    // TestAdd tests the Add function with several pairs of numbers.
+    func TestAdd(t *testing.T) {
+        testCases := []struct {
+            name     string
+            a, b     int
+            expected int
+        }{
+            {"two positive numbers", 2, 3, 5},
+            {"negative and positive", -1, 5, 4},
+            {"two negative numbers", -2, -3, -5},
+        }
+
+        for _, tc := range testCases {
+            t.Run(tc.name, func(t *testing.T) {
+                result := Add(tc.a, tc.b)
+                if result != tc.expected {
+                    t.Errorf("Add(%d, %d) = %d; expected %d", tc.a, tc.b, result, tc.expected)
+                }
+            })
+        }
+    }
+    ```
