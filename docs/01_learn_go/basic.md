@@ -1,5 +1,10 @@
 # 笔记：Go 语言基础
 
+!!! info "参考文献"
+
+    - [Go 语言简明教程](https://geektutu.com/post/quick-golang.html)
+    - [Go Wiki: Go Modules](https://go.dev/wiki/Modules#new-concepts)
+
 ## rune 类型
 
 - `rune` 类型等同于 `int32`，用于表示一个 Unicode 码点（code point）。
@@ -91,7 +96,7 @@ func funcName(param1 Type1, param2 Type2, ...) (return1 Type3, ...) {
 }
 ```
 
-# 错误处理
+### 错误处理
 
 - 多返回值的特性使得函数可以额外返回一个反映运行状态的变量
 - error 往往是能预知的错误，但是也可能出现一些不可预知的错误，例如数组越界，这种错误可能会导致程序非正常退出，在 Go 语言中称之为 panic。
@@ -272,3 +277,24 @@ type Person interface {
         }
     }
     ```
+
+## 包(Package)和模块(Modules)
+
+### package
+
+- `package` 应该被组织在一个文件夹下。
+- 同一个 `package` 内部的所有源文件共享相同的命名空间。即：同一个 `package` 内部变量、类型、方法等定义可以相互看到。
+- 如果类型/接口/方法/函数/字段的首字母大写，则是 **Public** 的，对其他 `package` 可见，如果首字母小写，则是 **Private** 的，对其他 `package` 不可见。
+
+### modules
+
+- Go Modules 是 Go 1.11 版本之后引入的，Go 1.11 之前使用 $GOPATH 机制。
+- $GOPATH 机制和 $PATH 类似，通过环境变量设置路径，用户需要自己管理依赖的代码(`go get`)
+- Go Modules 算是较为完善的包管理工具，同时支持代理。
+- [参考链接](https://go.dev/wiki/Modules#new-concepts)
+
+- 模块是相关 Go 包的集合。
+- 模块记录精确的依赖关系需求并创建可重复的构建。
+- 存储库包含一个或多个 Go 模块。
+- 每个模块包含一个或多个 Go 包。
+- 每个包由单个目录中的一个或多个 Go 源文件组成。
