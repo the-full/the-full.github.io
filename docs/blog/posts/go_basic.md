@@ -1,6 +1,7 @@
 ---
 draft: false
-date: 2024-09-01
+date:
+  created: 2024-09-01
 categories:
   - learn skill
 ---
