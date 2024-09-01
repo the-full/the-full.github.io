@@ -1,9 +1,18 @@
+---
+draft: false
+date: 2024-09-01
+categories:
+  - learn skill
+---
+
 # 笔记：Go 语言基础
 
 !!! info "参考文献"
 
     - [Go 语言简明教程](https://geektutu.com/post/quick-golang.html)
     - [Go Wiki: Go Modules](https://go.dev/wiki/Modules#new-concepts)
+
+<!-- more -->
 
 ## rune 类型
 

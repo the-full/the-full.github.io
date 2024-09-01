@@ -1,8 +1,17 @@
+---
+draft: true
+date: 2024-09-01
+categories:
+  - research asset
+---
+
 # 关于 ModelNet40 数据集
 
 !!! Abstract "导言"
 
     ModelNet40 是三维对抗攻防中一个非常常用的数据集，绝大多数方法都会在该数据集上进行评估。然而，在阅读相关论文时，会发现这个数据集有很多变体，通常是前人工作中预处理过后的版本，这导致论文（代码）中提到 ModelNet40 数据集时往往带有多意性。另一方面，最近尝试复现的点云对抗防御方法 **IF-Defense** ，需要在 ModelNet40 的基础上构建一个变体数据集，但在运行作者的脚本时遇到问题，需要梳理一下它的构建细节。因此，在这里对 ModelNet40 的各种变体和构建细节进行记录。本文将忽略数据集的存储细节也不会包括如何实现 DataSet 类来读取数据的内容。
+
+<!-- more -->
 
 ## Root: ModelNet
 
@@ -124,17 +133,23 @@ mkdir -p $build_path_c/0_in \
 
 #### 重整：一个完整的构建过程
 
-三个核心脚本的运行依赖于`Manifold` 和几个 `python` 文件，后者除了依赖第三方包还依赖于 `Occupancy Networks` 作者写的 `im2mesh` 包，需要运行 `setup.py` 脚本安装。此外，还需要下载相应数据集并在 `config.sh` 中进行正确的配置。
+三个核心脚本的运行依赖于 Manifold 和几个 python 文件，后者除了依赖第三方包还依赖于 Occupancy Networks 作者写的 `im2mesh` 包，需要运行 `setup.py` 脚本安装。此外，还需要下载相应数据集并在 `config.sh` 中进行正确的配置。
 
-配置完成后，先进行水密曲面的生成，然后在和原来一样依次运行 `build.sh` 和 `install.sh` 脚本，也可以将生成部分合并到 `build.sh` 中，反正按流程来就行。水密曲面的生成在 `IF-Defense` 作者提供的 `make_watertight.py` 脚本上稍微改改就行，不做赘述。
+配置完成后，先进行水密曲面的生成，然后在和原来一样依次运行 `build.sh` 和 `install.sh` 脚本，也可以将生成部分合并到 `build.sh` 中，反正按流程来就行。水密曲面的生成在 IF-Defense 作者提供的 `make_watertight.py` 脚本上稍微改改就行，不做赘述。
 
 ??? tip "安装 im2mesh"
 
     简单来说，整个安装过程就是两步：
 
-     - python setup.py build_ext --inplace
-     - python install
+    ``` bash
+    python setup.py build_ext --inplace
+    python install
+    ```
 
-    这两行命令起到的效果就是依次编译 `im2mesh.utils` 下的 `libxxx` 文件并构建相应模块，`--inplace` 指定动态链接库放在 `libxxx` 本身的文件夹下，之后可以使用 python 调用相关接口。需要注意的是，`sample_mesh.py` 中使用的 `libmesh` 没有出现在 `IF-Defense` 作者提供的 `im2mesh` 中，可能作者使用其他方法替代了 `check_mesh_contains` 函数（我对这个不太了解），因此这里需要从原仓库中借过来这部分代码（`setup.py` 脚本也要补充）。
+    这两行命令起到的效果就是依次编译 `im2mesh.utils` 下的 lib* 文件并构建相应模块，`--inplace` 指定动态链接库放在 lib* 所在的文件夹下，之后可以使用 python 调用相关接口。需要注意的是，`sample_mesh.py` 中使用的 `libmesh` 没有出现在 IF-Defense 作者提供的 `im2mesh` 中，可能作者使用其他方法替代了 `check_mesh_contains` 函数（我对这个不太了解），因此这里需要从原仓库中借过来这部分代码（`setup.py` 也要补充）。
 
-    最后讨论一下 `sample_mesh.py` 中的第 9 行的 TODO 怎么进行。按原来的 `setup.py` 脚本安装的话， `libmesh` 中其实并不包含 `check_mesh_contains` 函数，只有编译构建的模块 `triangle_hash`，或者说 `check_mesh_contains` 函数没有被 "安装"。作者的解决方案是硬编码包搜索路径，拓展 `PYTHONPATH` 从而可以找到这个函数。这个方案的问题是 `sample_mesh.py` 和 `im2mesh` 的相对位置被硬编码，产生了不必要的耦合。解决方法也挺简单，这个问题产生的原因是 `setup.py` 中只指明了 `libmesh.triangle_hash` 是一个模块，而没有指明 `libmesh` 是一个包，因此只需要在 `setup.py` 的 `setup` 函数中增加一行 `packages=find_packages()` 让程序发现 `libmesh` 是一个包再重新安装就可以了。
+??? tip "how to do better"
+
+    这里讨论一下 `sample_mesh.py` 中的第 9 行的 **TODO** 怎么进行。按原来的 `setup.py` 脚本安装的话， `libmesh` 中其实并不包含 `check_mesh_contains` 函数，只有编译构建的模块 `triangle_hash`，或者说 `check_mesh_contains` 函数没有被 "安装"。作者的解决方案是硬编码包搜索路径，拓展 `PYTHONPATH` 从而可以找到这个函数。这个方案的问题是 `sample_mesh.py` 和 `im2mesh` 的相对位置被硬编码，产生了不必要的耦合。
+
+    解决方法是简单的，问题产生的原因是 `setup.py` 中只指明了 `libmesh.triangle_hash` 是一个模块，而没有指明 `libmesh` 是一个包，因此只需要在 `setup.py` 的 `setup` 函数中增加一行 `packages=find_packages()` 让程序发现 `libmesh` 是一个包再重新安装就可以了。
