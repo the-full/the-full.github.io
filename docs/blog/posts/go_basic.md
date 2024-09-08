@@ -4,6 +4,9 @@ date:
   created: 2024-09-01
 categories:
   - learn skill
+tags:
+  - note
+  - go
 ---
 
 # 笔记：Go 语言基础

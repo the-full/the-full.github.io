@@ -5,7 +5,7 @@ date:
 categories:
   - read paper
 tags:
-  - GradCraft
+  - Multi-task learning
 ---
 
 # GradCraft: Elevating Multi-task Recommendations through Holistic Gradient Crafting

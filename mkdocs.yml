@@ -71,5 +71,9 @@ plugins:
         - learn skill
         - research asset
         - misc
-      draft: true
+      draft: false
   - tags
+
+nav:
+  - Blog:
+    - blog/index.md

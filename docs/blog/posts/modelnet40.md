@@ -23,65 +23,39 @@ ModelNet 的[官网](https://modelnet.cs.princeton.edu/) 包含两个版本：Mo
 
     注：在 ai 对论文的总结上修改而来。
 
-
-
     1. **数据收集**：从 3D Warehouse 和 Yobi3D 搜索引擎（索引了 261 个 CAD 模型网站）下载 3D CAD 模型。
-
-
-
     2. **类别选择**：基于 SUN 数据库中的常见对象类别进行查询，选择每个类别至少包含 20 个实例的类别，排除了搜索结果太少的类别。
-
-
-
     3. **数据清洗**：
 
-
-
         1. **移除误分类模型**：由 Amazon Mechanical Turk 上的工作人员确认类别标签是否与模型匹配以识别和去除错误分类的模型。
-
-
-
         2. **移除无关对象**：作者手动检查每个3D模型，从每个CAD模型中移除不相关对象（例如，地板、缩略图、站在物体旁边的人物等），确保每个网格模型只包含属于标注类别的一个对象。
-
-
-
         3. **移除不现实的模型**：包括过于简化的模型或仅包含对象图片的模型。
-
-
-
         4. **移除重复模型**：确保数据集中的模型不重复。
 
 ## Version 1: ModelNet40 Hdf5
 
-该版本来自于
+该版本来自于 [PointNet](https://arxiv.org/abs/1612.00593)，是ModelNet40数据集的一种预处理版本。在这个版本中，每个模型的数据被保存为HDF5格式，便于快速读取和处理。每个点云包含2048个点，这些点是从模型表面均匀采样的。为了便于网络训练，每个点云都被进行了零均值处理，并归一化到单位球面内。
 
 ??? tip "构建细节"
-
-    注：在 ai 对论文的总结上修改而来。
-
-
+注：在 ai 对论文的总结上修改而来。
 
     1. **数据集划分**：将数据集分为训练集（9,843 个模型）和测试集（2,468 个模型）。
-
-
-
     2. **数据预处理**：
 
-
-
         1. **数据采样**：从每个 3D 模型的网格面上均匀采样 1024 个点，采样基于网格面积进行。
-
-
-
         2. **数据归一化**：将采样的点云归一化到单位球内。
 
 ## Version 2: ModelNet40 Resampled
+
+该版本来自于 [PointNet++](https://arxiv.org/abs/1706.02413)，
+
+??? tip "构建细节"
 
 ## Version 3: ModelNet10 250 Sample
 
 ## Version 4：ModelNet40 for Onet
 
-该版本来自于三维对抗的一项防御方法 `IF-Defense`（[github 链接](https://github.com/Wuziyi616/IF-Defense/tree/main)），作者需要训练一个能将点云转化为网格的网络，该网络来自于 `Occupancy Network`（[github 链接](https://github.com/autonomousvision/occupancy_networks)）, 训练时的监督信号是：空间的中的某一点在模型的内部还是外部（参考 [占据网络](blog/posts/occupancy_network.md)），因此需要保证训练使用的曲面是封闭的也即水密网格。 `IF-Defense` 的作者参考了这个 [issue](https://github.com/autonomousvision/occupancy_networks/issues/27) 使用 `Manifold` （[github 链接](https://github.com/hjwdzh/Manifold)）来将网格转化为水密网格，从而规避了一些额外的预处理步骤。
+该版本来自于三维对抗的一项防御方法 `IF-Defense`（[github 链接](https://github.com/Wuziyi616/IF-Defense/tree/main)），作者需要训练一个能将点云转化为网格的网络，该网络来自于 `Occupancy Network`（[github 链接](https://github.com/autonomousvision/occupancy_networks)）, 训练时的监督信号是：空间的中的某一点在模型的内部还是外部（参考 [占据网络](./occupancy_network.md)），因此需要保证训练使用的曲面是封闭的也即水密网格。 `IF-Defense` 的作者参考了这个 [issue](https://github.com/autonomousvision/occupancy_networks/issues/27) 使用 `Manifold` （[github 链接](https://github.com/hjwdzh/Manifold)）来将网格转化为水密网格，从而规避了一些额外的预处理步骤。
 
 ### 构建细节
 

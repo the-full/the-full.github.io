@@ -4,7 +4,7 @@ date: 2024-09-01
 categories:
   - read paper
 tags:
-  - ONet
+  - 3D Reconstruction
 ---
 
 # Occupancy Networks: Learning 3D Reconstruction in Function Space
