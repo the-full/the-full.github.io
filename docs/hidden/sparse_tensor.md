@@ -11,6 +11,7 @@ tags:
 !!! abstract "导言"
 
     最近研究的内容涉及到稀疏张量及其相关操作，主要是 **spconv** 和 **MinkowskiEngine** 这两个库的使用，故在此记录。本文只关注三件事：
+
     - 稀疏操作的原理
     - 怎么使用 spconv / MinkowskiEngine
     - spconv 和 MinkowskiEngine 的异同
