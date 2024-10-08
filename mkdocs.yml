@@ -71,6 +71,7 @@ plugins:
         - learn skill
         - research asset
         - misc
+        - linux server
       draft: false
   - tags
 
