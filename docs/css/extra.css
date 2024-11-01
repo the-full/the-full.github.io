@@ -12,7 +12,7 @@
 
 .darkcyan, .darkcyan-important { color: darkcyan !important; }
 
-:root { --md-text-font: JetBrains Mono; --md-code-font: Roboto Mono; }
+:root { --md-text-font: Roboto Mono; JetBrains Mono; --md-code-font: Roboto Mono; }
 
 .md-typeset { font-feature-settings: "kern" 0; }
 
