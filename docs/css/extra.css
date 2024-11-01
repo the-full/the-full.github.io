@@ -14,7 +14,7 @@
 
 :root { --md-text-font: Roboto Mono; JetBrains Mono; --md-code-font: Roboto Mono; }
 
-.md-typeset { font-feature-settings: "kern" 0; }
+.md-typeset { font-feature-settings: "kern" 0; font-size: 0.7rem; }
 
 .md-typeset #references, .md-typeset .no-underline { margin-bottom: 0; padding-bottom: 0; border: none; }
 
@@ -30,8 +30,6 @@
 
 .md-typeset dt { font-weight: bold; }
 
-.md-typeset p {  font-size: 0.7rem; }
-
 .md-typeset img { display: block; margin-left: auto; margin-right: auto; }
 
 .md-typeset .img-inline { display: inline-block; vertical-align: text-bottom; }
@@ -45,8 +43,6 @@
 .md-typeset .md-typeset__table { display: block; margin-left: auto; margin-right: auto; }
 
 .md-typeset .md-typeset__table > table { display: table; width: auto; margin: 0 auto; }
-
-.md-typeset p.caption { text-align: center; font-size: 0.94em; color: grey; margin: -0.7em 0 0; }
 
 
 .md-typeset .footnote hr { margin-top: 0.2em; }
