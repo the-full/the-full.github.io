@@ -85,7 +85,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ### 2. 使用 cargo 安装 joshuto
 
 ```bash
-cargo install --git <https://github.com/kamiyaa/joshuto.git> --force
+cargo install --git https://github.com/kamiyaa/joshuto.git --force
 ```
 
 ### 3. 一些简单的配置
@@ -233,18 +233,21 @@ cargo install lsd
 
 使用前需要初始化，在 .bashrc 中添加如下命令即可
 
-`````bash title=".bashrc"
+```bash title=".bashrc"
+  TODO
+```
 
 ??? info "about bat"
 
-````bash title="安装 bat"
+```bash title="安装 bat"
 cargo install bat
-`````
+```
 
 ??? info "about zellij"
 
-````bash title="安装 zellij"
+```bash title="安装 zellij"
 cargo install zellij
+```
 
 ## 七、安装 fzf
 
@@ -279,4 +282,3 @@ install lazygit ~/.local/usr/bin
 !!! info "参考资料"
 
     - [官方仓库的 install 一节](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#ubuntu)
-````
