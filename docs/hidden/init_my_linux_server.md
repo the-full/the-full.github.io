@@ -28,7 +28,7 @@ tags:
 这里下载发布的最新版本
 
 ```bash
-wget https://repo.anaconda.com/^Cniconda/Miniconda3-latest-Linux-x86_64.sh
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 ```
 
 ### 2. 使用脚本安装 Miniconda
