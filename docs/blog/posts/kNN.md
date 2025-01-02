@@ -2,10 +2,13 @@
 draft: true
 date:
   created: 2024-09-02
+  updated: 2025-01-02
 categories:
-  - read paper
+  - Reading
 tags:
   - Adversarial Attack
+authors:
+  - zhazi
 ---
 
 # Robust Adversarial Objects against Deep Learning Models
@@ -19,13 +22,12 @@ tags:
     1. 如何实现对抗样本的物理存在性？
     2. 具体方法在代码中如何对应？
 
-<!-- more -->
-
 ??? info "论文基本信息"
 
     - 论文链接：[arxiv](https://ojs.aaai.org/index.php/AAAI/article/download/5443/5299)
     - 代码链接：[github](https://github.com/jinyier/ai_pointnet_attack)
     - AI 摘要：本文介绍了一种对抗性攻击算法，专门针对 3D 点云处理网络 PointNet++。该算法能生成在模拟和实际 3D 打印后都能产生对抗性点云的鲁棒性物体。研究者们通过点云数据的精确扰动，结合点云间距离度量和表面重建技术，优化了攻击策略。实验证明，该方法能有效规避现有的 3D 对抗性攻击防御机制，在数字模拟和物理世界中均保持高攻击成功率。
+<!-- more -->
 
 ## 为了实现物理存在性，我们需要什么？
 

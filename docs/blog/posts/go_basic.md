@@ -2,11 +2,15 @@
 draft: false
 date:
   created: 2024-09-01
+  updated: 2025-01-02
 categories:
-  - learn skill
+  - Learning
+  - Memo
 tags:
   - note
   - go
+authors:
+  - zhazi
 ---
 
 # 笔记：Go 语言基础

@@ -1,10 +1,14 @@
 ---
 draft: true
-date: 2024-09-01
+date: 
+  created: 2024-09-01
+  updated: 2025-01-02
 categories:
-  - read paper
+  - Reading
 tags:
   - 3D Reconstruction
+authors:
+  - zhazi
 ---
 
 # Occupancy Networks: Learning 3D Reconstruction in Function Space
@@ -17,14 +21,13 @@ tags:
     2. 怎么实现占据网络？
     3. 怎么使用占据网络？
 
-<!-- more -->
-
 ??? info "论文基本信息"
 
     - 论文链接：[arxiv](https://arxiv.org/abs/1812.03828)
     - 代码链接：[github](https://github.com/autonomousvision/occupancy_networks)
     - 补充材料：[pdf](https://www.cvlibs.net/publications/Mescheder2019CVPR_supplementary.pdf)
     - AI 摘要：**占据网络**是一种新型的三维重建方法，它通过学习连续的三维**占据函数**来隐式表示三维表面，从而克服了以往方法在分辨率和拓扑结构方面的局限性。该方法能够以无限分辨率编码三维结构，同时保持较低的内存占用。此外，占据网络能够从多种输入类型（例如点云、单张图像和低分辨率体素表示）中重建三维几何形状，并在多个基准测试中取得了有竞争力的结果。
+<!-- more -->
 
 ## 什么是占据网络？
 

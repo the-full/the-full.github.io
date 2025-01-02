@@ -1,18 +1,20 @@
 ---
 draft: false
-date: 2024-09-01
+date: 
+  created: 2024-09-01
+  updated: 2025-01-02
 categories:
-  - misc
+  - Misc
+authors:
+  - zhazi
 ---
 
-# "Watertight" and "Unwatertight" meshes
+# 水密网格和非水密网格
 
-!!! Abstract "导言"
-
-    在研究三维对抗中的一项防御方法 IF-Defense 时，遇到一个与曲面相关的概念 "watertight"。这里记录一下这个概念。
-    参考文献在[这里](https://support.einscan.com/en/support/solutions/articles/60000687687--watertight-and-unwatertight-meshes)
-
+在研究三维对抗中的一项防御方法 IF-Defense 时，遇到一个与曲面相关的概念 "watertight"。这里记录一下这个概念。
 <!-- more -->
+
+参考文献在[这里](https://support.einscan.com/en/support/solutions/articles/60000687687--watertight-and-unwatertight-meshes)。
 
 ![水密/非水密网格示意图](./images/水密网格示意图.png)
 

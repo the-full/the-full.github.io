@@ -3,10 +3,13 @@ draft: false
 date:
   created: 2024-09-01
   updated: 2024-11-01
+  updated: 2025-01-02
 categories:
-  - read paper
+  - Reading
 tags:
   - Multi-task learning
+authors:
+  - zhazi
 ---
 
 # GradCraft: Elevating Multi-task Recommendations through Holistic Gradient Crafting
@@ -20,8 +23,6 @@ tags:
     1. GradCraft 算法流程？
     2. 代码如何与算法对应？
 
-<!-- more -->
-
 ??? info "论文基本信息"
 
     - 论文链接：[arxiv](https://arxiv.org/abs/2407.19682)
@@ -29,6 +30,8 @@ tags:
     - 代码链接：[github](https://github.com/baiyimeng/GradCraft)
     - 补充材料：[pdf](https://www.cvlibs.net/publications/Mescheder2019CVPR_supplementary.pdf)
     - AI 摘要：**GradCraft** 是一种创新的多目标学习方法，它通过精细调控不同任务的梯度幅度和方向来优化多任务学习中的性能。该方法首先动态调整梯度幅度，确保它们与最大梯度范数对齐，从而避免某些任务在优化过程中占据主导地位。接着，GradCraft 采用投影技术来解决梯度间的方向冲突，确保所有任务在更新模型参数时能够和谐共进。这种方法在多任务学习中实现了梯度的全局平衡，提高了模型在处理多个目标时的效率和准确性。通过一系列实验验证了GradCraft的有效性，展示了其在多目标学习领域的应用潜力。
+
+<!-- more -->
 
 ## 问题分析
 

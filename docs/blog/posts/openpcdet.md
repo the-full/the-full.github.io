@@ -1,12 +1,16 @@
 ---
 draft: true
-date: 2024-10-31
+date: 
+  created: 2024-10-31
+  updated: 2025-01-02
 categories:
-  - misc
-  - learn skill
+  - Misc
+  - Learning
 tags:
   - 3D Detection 
   - OpenPCDet
+authors:
+  - zhazi
 ---
 
 # 笔记：OpenPCDet 相关
@@ -15,9 +19,9 @@ tags:
 
     出于某些原因，最近又需要使用 OpenPCDet 进行模型的训练。具体来说，我们要在 waymo 数据集的点云上做一些修改来验证一件事。我的任务是使用 OpenPCDet 在修改后的数据集上训练一些常用的三维目标检测器做为基线。因此有了这篇笔记。
 
-!!! info "参考文献"
+??? info "参考文献"
 
-    1. 
+    TODO
 
 <!-- more -->
 

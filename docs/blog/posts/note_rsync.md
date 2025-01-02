@@ -1,12 +1,13 @@
 ---
-draft: false
+draft: true
 date:
   created: 2024-09-18
+  updated: 2025-01-02
 categories:
-  - misc
-  - linux server
-tags:
-  - memo
+  - Learning
+  - Memo
+authors:
+  - zhazi
 ---
 
 # 笔记：linux 服务器间同步命令 -- rsync

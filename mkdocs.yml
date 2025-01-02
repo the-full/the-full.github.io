@@ -1,5 +1,8 @@
-site_name: A Memo
-site_description: a memo for storing notes
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+# Site Infomation
+site_name: Zhazi's Memo
+site_description: A personal knowledge base for storing notes, research, and technical documentation
 site_author: Zhazi
 
 theme:
@@ -7,13 +10,6 @@ theme:
   language: zh
   font: false
   palette:
-    - scheme: default
-      media: "(prefers-color-scheme: light)"
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/weather-night
-        name: 切换至深色模式
     - scheme: slate
       media: "(prefers-color-scheme: dark)"
       primary: blue
@@ -21,6 +17,13 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: 切换至浅色模式
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 切换至深色模式
 
   features:
     - content.action.edit
@@ -31,6 +34,22 @@ theme:
     - navigation.indexes
     - navigation.top
     - navigation.tracking
+
+
+plugins:
+  - search
+  - blog:
+      archive_date_format: MMMM yyyy
+      categories_allowed:
+        - Reading    # 读点新东西 (带有理解) => !!! 导言[必选] + ??? 文献信息
+        - Learning   # 学点新东西 (带有实践) => !!! 导言[可选] + ??? 参考文献
+        - Summary    # 总结知识 (带有系统化的知识) => 导言 + 参考文献
+        - Memo       # 备忘录 (搬运的内容，将分散的知识集中化) 
+        - Misc       # 杂项，不知道该归类为哪种 => 自由设置
+      pagination_per_page: 5
+      draft: false
+  - tags
+
 
 markdown_extensions:
   - admonition
@@ -52,29 +71,17 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
-  - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
 
 extra_css:
-  - 'css/extra.css'
+  - _static/css/extra.css
 
 extra_javascript:
-  - javascripts/mathjax.js
+  - _static/js/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
-plugins:
-  - search
-  - blog:
-      categories_allowed:
-        - read paper 
-        - learn skill
-        - research asset
-        - misc
-        - linux server
-      draft: false
-  - tags
 
 nav:
+  - Home: index.md
   - Blog:
     - blog/index.md

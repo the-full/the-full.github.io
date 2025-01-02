@@ -1,0 +1,1014 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A personal knowledge base for storing notes, research, and technical documentation">
+      
+      
+        <meta name="author" content="Zhazi">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Init my linux server - Zhazi's Memo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#miniconda" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Zhazi&#39;s Memo" class="md-header__button md-logo" aria-label="Zhazi's Memo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zhazi's Memo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Init my linux server
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换至深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="切换至浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zhazi&#39;s Memo" class="md-nav__button md-logo" aria-label="Zhazi's Memo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zhazi's Memo
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../blog/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    归档
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            归档
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    分类
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            分类
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/category/learn-skill/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    learn skill
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/category/linux-server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    linux server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/category/misc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    misc
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/category/read-paper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    read paper
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#miniconda" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、安装 Miniconda
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、安装 Miniconda">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-miniconda" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 下载 Miniconda 安装脚本
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-miniconda" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 使用脚本安装 Miniconda
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-apt" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、安装无 root 下 apt 能安装的程序
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#johsuto" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、安装 johsuto
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、安装 johsuto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-rustup-rust-cargo" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 使用 rustup 安装 rust 工具链（包括 cargo）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cargo-joshuto" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 使用 cargo 安装 joshuto
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 一些简单的配置
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nvim-lazyvim" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、安装 nvim + lazyvim
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、安装 nvim + lazyvim">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-nerd-font" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 安装 Nerd Font 字体
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-python3-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 安装 python3 环境（需要 root)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-npm" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 安装 NPM
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 安装 NPM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-nvm-node-version-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 安装 NVM (Node Version Manager)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-nvm-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 使用 NVM 安装合适的 node
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-neovim" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 安装 Neovim
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-lazyvim" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 安装 LazyVim
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 一些简单的配置
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zlua" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、安装 z.lua
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cargo" class="md-nav__link">
+    <span class="md-ellipsis">
+      六、安装 cargo 能安装的程序
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fzf" class="md-nav__link">
+    <span class="md-ellipsis">
+      七、安装 fzf
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      八、设置别名
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lazygit" class="md-nav__link">
+    <span class="md-ellipsis">
+      九、安装 lazygit
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+<nav class="md-tags" >
+  
+    
+    
+    
+      <span class="md-tag">memo</span>
+    
+  
+</nav>
+
+
+
+  <h1>Init my linux server</h1>
+
+<div class="admonition abstract">
+<p class="admonition-title">导言</p>
+<p>当我们得到了一个新的服务器账号，常常需要进行一些简单的配置以符合个人的使用习惯，促进后续的工作的开展。但是每得到一个新的账号就进行一次这样的初始化实在太过低效，尤其是很多安装命令需要再次查找甚至需要重新理解，因此，建立这个文档，之后将常用的初始化安装汇集在此。</p>
+<p>注：在概念上这里记录的内容和 <code>homebrew</code>、<code>just</code> 等工具中的 "配方" 是相近的，或许后续可以考虑引入类似的工具来自动化安装？</p>
+</div>
+<!-- more -->
+
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>只记录完成某个目的所使用的命令以及一些简单的信息，实践中目的完成顺序并不一定按记录顺序来。</p>
+</div>
+<h2 id="miniconda">一、安装 Miniconda<a class="headerlink" href="#miniconda" title="Permanent link">&para;</a></h2>
+<h3 id="1-miniconda">1. 下载 Miniconda 安装脚本<a class="headerlink" href="#1-miniconda" title="Permanent link">&para;</a></h3>
+<p>这里下载发布的最新版本</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>wget<span class="w"> </span>https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+</span></code></pre></div>
+<h3 id="2-miniconda">2. 使用脚本安装 Miniconda<a class="headerlink" href="#2-miniconda" title="Permanent link">&para;</a></h3>
+<p>按照脚本的指示进行安装即可</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sh<span class="w"> </span>Miniconda3-latest-Linux-x86_64.sh
+</span></code></pre></div>
+<h2 id="root-apt">二、安装无 root 下 apt 能安装的程序<a class="headerlink" href="#root-apt" title="Permanent link">&para;</a></h2>
+<p>这种安装的基本流程是使用 <code>apt download</code> 来下载对应的 .deb 包，然后使用 <code>dpkg -x</code> 来将包安装到指定的位置。这种安装方式需要自己处理依赖，还需要面对一些不安装在默认位置就会出问题的情况。</p>
+<p>注：下载得到的 .deb 包版本可能有差异，下面的命令仅供参考。</p>
+<div class="language-bash highlight"><span class="filename">安装 neofetch</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>apt<span class="w"> </span>download<span class="w"> </span>neofetch
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>dpkg<span class="w"> </span>-x<span class="w"> </span>neofetch_7.0.0-1_all.deb<span class="w"> </span>~/.local/
+</span></code></pre></div>
+<div class="language-bash highlight"><span class="filename">安装 Lua5.2</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>apt<span class="w"> </span>download<span class="w"> </span>lua5.2
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>dpkg<span class="w"> </span>-x<span class="w"> </span>lua5.2_5.2.4-1.1build3_amd64.deb<span class="w"> </span>~/.local/
+</span></code></pre></div>
+<p>这样安装需要自己创建 lua 的符号链接</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ln<span class="w"> </span>-s<span class="w"> </span>~/.local/usr/bin/lua5.2<span class="w"> </span>~/.local/usr/bin/lua
+</span></code></pre></div>
+<div class="language-bash highlight"><span class="filename">安装 fd-find</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>apt<span class="w"> </span>download<span class="w"> </span>fd-find
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>dpkg<span class="w"> </span>-x<span class="w"> </span>fd-find_7.4.0-2ubuntu0.1_amd64.deb<span class="w"> </span>~/.local/
+</span></code></pre></div>
+<h2 id="johsuto">三、安装 johsuto<a class="headerlink" href="#johsuto" title="Permanent link">&para;</a></h2>
+<details class="info">
+<summary>about joshuto</summary>
+<p>TODO</p>
+</details>
+<p>这里采用 cargo 来进行 joshuto 的安装。</p>
+<h3 id="1-rustup-rust-cargo">1. 使用 rustup 安装 rust 工具链（包括 cargo）<a class="headerlink" href="#1-rustup-rust-cargo" title="Permanent link">&para;</a></h3>
+<p>注：访问 <a href="https://www.rust-lang.org/tools/install">官方网页</a> 获得最新的安装命令，下面的命令仅供参考。</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>--proto<span class="w"> </span><span class="s1">&#39;=https&#39;</span><span class="w"> </span>--tlsv1.2<span class="w"> </span>-sSf<span class="w"> </span>https://sh.rustup.rs<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+</span></code></pre></div>
+<h3 id="2-cargo-joshuto">2. 使用 cargo 安装 joshuto<a class="headerlink" href="#2-cargo-joshuto" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cargo<span class="w"> </span>install<span class="w"> </span>--git<span class="w"> </span>https://github.com/kamiyaa/joshuto.git<span class="w"> </span>--force
+</span></code></pre></div>
+<h3 id="3">3. 一些简单的配置<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">参考资料</p>
+<p>TODO</p>
+</div>
+<h2 id="nvim-lazyvim">四、安装 nvim + lazyvim<a class="headerlink" href="#nvim-lazyvim" title="Permanent link">&para;</a></h2>
+<h3 id="1-nerd-font">1. 安装 Nerd Font 字体<a class="headerlink" href="#1-nerd-font" title="Permanent link">&para;</a></h3>
+<p>到 <a href="https://www.nerdfonts.com/font-downloads">这个网页</a> 中挑选喜欢的字体，然后复制它的压缩包下载链接</p>
+<div class="language-bash highlight"><span class="filename">下载 JetBrainsMono</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>wget<span class="w"> </span>https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
+</span></code></pre></div>
+<p>解压字体文件到合适的位置</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>unzip<span class="w"> </span>JetBrainsMono.zip<span class="w"> </span>-d<span class="w"> </span>~/.local/share/fonts
+</span></code></pre></div>
+<p>可能需要先创建一下这个文件夹</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.local/share/fonts
+</span></code></pre></div>
+<p>使用 <code>fc-cache</code> 命令安装字体文件</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>fc-cache<span class="w"> </span>-fv
+</span></code></pre></div>
+<p>输出中应该包含如下所示的一行：
+<img alt="安装字体" src="../images/%E5%AE%89%E8%A3%85%20font.png" /></p>
+<h3 id="2-python3-root">2. 安装 python3 环境（需要 root)<a class="headerlink" href="#2-python3-root" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3<span class="w"> </span>python3-venv<span class="w"> </span>python3-pip
+</span></code></pre></div>
+<h3 id="3-npm">3. 安装 NPM<a class="headerlink" href="#3-npm" title="Permanent link">&para;</a></h3>
+<h4 id="31-nvm-node-version-manager">3.1 安装 NVM (Node Version Manager)<a class="headerlink" href="#31-nvm-node-version-manager" title="Permanent link">&para;</a></h4>
+<p>注：访问 <a href="https://github.com/nvm-sh/nvm">这个仓库</a> 获得最新的安装命令，下面的命令仅供参考。</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>-o-<span class="w"> </span>https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</span></code></pre></div>
+<h4 id="32-nvm-node">3.2 使用 NVM 安装合适的 node<a class="headerlink" href="#32-nvm-node" title="Permanent link">&para;</a></h4>
+<p>先检查能安装什么版本</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>nvm<span class="w"> </span>ls-remote
+</span></code></pre></div>
+<p>这里安装 v20 的 LTS 版本</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>nvm<span class="w"> </span>install<span class="w"> </span><span class="m">20</span>
+</span></code></pre></div>
+<h3 id="4-neovim">4. 安装 Neovim<a class="headerlink" href="#4-neovim" title="Permanent link">&para;</a></h3>
+<p>注：访问 <a href="https://github.com/neovim/neovim">官方仓库</a> 获得最新的发布版本，下面的命令仅供参考。</p>
+<p>为了使用一些新的特性，这里需要安装最新版本，因此使用 Releases 中的预构建版本。</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>wget<span class="w"> </span>https://github.com/neovim/neovim/releases/download/v0.10.1/nvim-linux64.tar.gz
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>tar<span class="w"> </span>zxf<span class="w"> </span>nvim-linux64.tar.gz
+</span></code></pre></div>
+<p>把解压文件存放在一个合适的位置，然后在 <code>$PATH</code> 包含的路径中建立一个符号链接来指向 nvim</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>mv<span class="w"> </span>nvim-linux64<span class="w"> </span>~/.local/usr/
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>ln<span class="w"> </span>-s<span class="w"> </span>~/.local/usr/nvim-linux64/bin/nvim<span class="w"> </span>~/.local/usr/bin/nvim
+</span></code></pre></div>
+<h3 id="5-lazyvim">5. 安装 LazyVim<a class="headerlink" href="#5-lazyvim" title="Permanent link">&para;</a></h3>
+<p>下载 <code>LazyVim/starter</code> 将其做为 <code>nvim</code> 的配置即可，之后打开 <code>nvim</code> 会自动初始化一切</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/LazyVim/starter<span class="w"> </span>~/.config/nvim
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>nvim
+</span></code></pre></div>
+<h3 id="6">6. 一些简单的配置<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<p><img alt="熟悉的 LazyVim" src="../images/LazyVim.png" /></p>
+<div class="admonition info">
+<p class="admonition-title">参考资料</p>
+<ul>
+<li><a href="https://www.bilibili.com/video/BV1uE421u7xE">bilibili: Neovim从新手到高手系列之轻松安装LazyVim</a></li>
+</ul>
+</div>
+<h2 id="zlua">五、安装 z.lua<a class="headerlink" href="#zlua" title="Permanent link">&para;</a></h2>
+<details class="info">
+<summary>about z.lua</summary>
+<p>TODO</p>
+</details>
+<p>该程序使用 lua 编写，需要先安装 lua，如果没有 root 权限也可以参考无 root 安装 lua 一节进行安装。另一方面，该程序是自包含的，因此只需要将 z.lua 文件存放到一个合适的位置并在初始化时指定即可。</p>
+<div class="language-bash highlight"><span class="filename">下载 z.lua</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/skywind3000/z.lua.git
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>mv<span class="w"> </span>z.lua/z.lua<span class="w"> </span>~/.local/usr/
+</span></code></pre></div>
+<p>在 .bashrc 中配置 z.lua 的初始化命令并开启增强模式和 fzf 支持。个人使用习惯上偏好双字母的命令，因此设置其名称为 <code>zz</code>。其他配置见 <a href="https://github.com/skywind3000/z.lua/blob/master/README.cn.md">这个文档</a>。</p>
+<div class="language-bash highlight"><span class="filename">.bashrc</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">_ZL_MATCH_MODE</span><span class="o">=</span><span class="m">1</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">_ZL_CMD</span><span class="o">=</span><span class="s1">&#39;zz&#39;</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>lua<span class="w"> </span>~/.local/usr/z.lua<span class="w">  </span>--init<span class="w"> </span>bash<span class="w"> </span>enhanced<span class="w"> </span>fzf<span class="k">)</span><span class="s2">&quot;</span>
+</span></code></pre></div>
+<h2 id="cargo">六、安装 cargo 能安装的程序<a class="headerlink" href="#cargo" title="Permanent link">&para;</a></h2>
+<details class="info">
+<summary>about ripgrep</summary>
+</details>
+<div class="language-bash highlight"><span class="filename">安装 ripgrep</span><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cargo<span class="w"> </span>install<span class="w"> </span>ripgrep
+</span></code></pre></div>
+<details class="info">
+<summary>about mcfly</summary>
+</details>
+<div class="language-bash highlight"><span class="filename">安装 mcfly</span><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cargo<span class="w"> </span>install<span class="w"> </span>mcfly
+</span></code></pre></div>
+<details class="info">
+<summary>about lsd</summary>
+</details>
+<div class="language-bash highlight"><span class="filename">安装 lsd</span><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>cargo<span class="w"> </span>install<span class="w"> </span>lsd
+</span></code></pre></div>
+<p>使用前需要初始化，在 .bashrc 中添加如下命令即可</p>
+<div class="language-bash highlight"><span class="filename">.bashrc</span><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="w">  </span>TODO
+</span></code></pre></div>
+<details class="info">
+<summary>about bat</summary>
+</details>
+<div class="language-bash highlight"><span class="filename">安装 bat</span><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>cargo<span class="w"> </span>install<span class="w"> </span>bat
+</span></code></pre></div>
+<details class="info">
+<summary>about zellij</summary>
+</details>
+<div class="language-bash highlight"><span class="filename">安装 zellij</span><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>cargo<span class="w"> </span>install<span class="w"> </span>zellij
+</span></code></pre></div>
+<h2 id="fzf">七、安装 fzf<a class="headerlink" href="#fzf" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>wget<span class="w"> </span>https://github.com/junegunn/fzf/releases/download/v0.55.0/fzf-0.55.0-linux_amd64.tar.gz
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>tar<span class="w"> </span>zxf<span class="w"> </span>nvim-linux64.tar.gz
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>mv<span class="w"> </span>fzf<span class="w"> </span>~/.local/usr/bin/
+</span></code></pre></div>
+<h2 id="_1">八、设置别名<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<div class="language-shell highlight"><span class="filename">.bashrc</span><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">lgit</span><span class="o">=</span><span class="s2">&quot;lazygit&quot;</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">jo</span><span class="o">=</span><span class="s2">&quot;joshuto&quot;</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;lsd&#39;</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">ll</span><span class="o">=</span><span class="s1">&#39;lsd -alF&#39;</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">la</span><span class="o">=</span><span class="s1">&#39;lsd -A&#39;</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">l</span><span class="o">=</span><span class="s1">&#39;lsd -CF&#39;</span>
+</span></code></pre></div>
+<h2 id="lazygit">九、安装 lazygit<a class="headerlink" href="#lazygit" title="Permanent link">&para;</a></h2>
+<p>先获取最新的版本号，再根据版本号下载发布的最新压缩包，解压后安装即可。</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nv">LAZYGIT_VERSION</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://api.github.com/repos/jesseduffield/lazygit/releases/latest&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Po<span class="w"> </span><span class="s1">&#39;&quot;tag_name&quot;: &quot;v\K[^&quot;]*&#39;</span><span class="k">)</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>curl<span class="w"> </span>-Lo<span class="w"> </span>lazygit.tar.gz<span class="w"> </span><span class="s2">&quot;https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_</span><span class="si">${</span><span class="nv">LAZYGIT_VERSION</span><span class="si">}</span><span class="s2">_Linux_x86_64.tar.gz&quot;</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>tar<span class="w"> </span>xf<span class="w"> </span>lazygit.tar.gz<span class="w"> </span>lazygit
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>install<span class="w"> </span>lazygit<span class="w"> </span>~/.local/usr/bin
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">参考资料</p>
+<ul>
+<li><a href="https://github.com/jesseduffield/lazygit?tab=readme-ov-file#ubuntu">官方仓库的 install 一节</a></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.top", "navigation.tracking"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

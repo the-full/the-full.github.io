@@ -2,11 +2,11 @@
 draft: false
 date:
   created: 2024-09-18
+  updated: 2025-01-02
 categories:
-  - misc
-  - linux server
-tags:
-  - memo
+  - Memo
+authors:
+  - zhazi
 ---
 
 # 笔记：ssh 相关
@@ -16,7 +16,6 @@ tags:
     1. [CSDN：ssh-keygen 的 详解](https://blog.csdn.net/nb1253587023/article/details/126403674)
     2. [博客园：Linux ssh命令详解](https://www.cnblogs.com/ftl1012/p/ssh.html)
     3. [知乎：一文彻底搞懂SSH连接过程](https://zhuanlan.zhihu.com/p/613089875)
-
 <!-- more -->
 
 ## 非对称加密

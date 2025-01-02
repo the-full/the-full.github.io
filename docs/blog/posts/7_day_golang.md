@@ -2,11 +2,14 @@
 draft: true
 date:
   created: 2024-09-05
+  updated: 2025-01-02
 categories:
-  - learn skill
+  - Learning
 tags:
   - note
   - go
+authors:
+  - zhazi
 ---
 
 # 笔记：7-day golang 系列：Web 框架 Gee
