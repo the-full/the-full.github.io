@@ -13,7 +13,7 @@ authors:
 
 # Geometry-Aware Generation of Adversarial Point Clouds
 
-!!! abstract "导言"
+!!! abstract ""
 
     最近在阅读三维对抗方向的经典论文，目前的计划是复现相关方法来构建一个基础的研究环境，而这篇论文是计划中的一篇。
 

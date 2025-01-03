@@ -13,7 +13,7 @@ authors:
 
 # 稀疏卷积技术初探
 
-!!! abstract "导言"
+!!! abstract ""
 
     最近研究的内容涉及到稀疏张量及其相关操作，主要是 **spconv** 和 **MinkowskiEngine** 这两个库的使用，故在此记录。本文只关注三件事：
 

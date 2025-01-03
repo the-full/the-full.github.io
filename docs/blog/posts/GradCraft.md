@@ -14,7 +14,7 @@ authors:
 
 # GradCraft: Elevating Multi-task Recommendations through Holistic Gradient Crafting
 
-!!! abstract "导言"
+!!! abstract ""
 
     逛知乎时遇到了这篇论文的介绍，感觉能用到我的任务中，因此这里记录一下。
 

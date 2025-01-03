@@ -13,7 +13,7 @@ authors:
 
 # Occupancy Networks: Learning 3D Reconstruction in Function Space
 
-!!! abstract "导言"
+!!! abstract ""
 
     在对抗攻防中，防御方发展出一类基于输入净化的方法，通过将对抗样本恢复为良性样本来实现防御。三维对抗防御中的一项研究 IF-Defense 属于此类方法，其先将点云重建为网格，然后在网格层面消除异常的形变，从而实现防御。其使用的曲面重建方法来自于本篇论文，因此，这里只关注三个问题：
 
