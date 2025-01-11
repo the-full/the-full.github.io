@@ -3,7 +3,7 @@ draft: false
 search:
   exclude: true
 date:
-  created: 2025-01-02
+  created: 2025-01-01
   updated: 2025-01-03
   updated: 2025-01-04
 categories:
