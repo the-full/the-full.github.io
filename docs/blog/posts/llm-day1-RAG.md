@@ -6,6 +6,7 @@ date:
   created: 2025-01-01
   updated: 2025-01-03
   updated: 2025-01-04
+  updated: 2025-01-12
 categories:
   - Learning
 tags:
@@ -30,7 +31,7 @@ authors:
 
     RAG 将问题求解划分为**检索**和**生成**两阶段，先通过检索，查找与问题相关的文档，再将文档和问题一并输入模型，由模型推理给出最终的答案，从而解决模型无法扩展知识和产生“幻觉”的问题。
 
-    参考文献：
+??? info "参考文献"
 
     - [TinyRAG](https://github.com/datawhalechina/tiny-universe/tree/main/content/TinyRAG)
     - [一文读懂：大模型RAG（检索增强生成）含高级方法](https://www.zhihu.com/tardis/zm/art/675509396?source_id=1003)
