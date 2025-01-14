@@ -29,64 +29,90 @@ authors:
 
 参考手册，Rsync 可以在远程主机和本地主机**之间**复制文件（它不支持在两个远程主机之间复制文件）。使用该命令涉及两对概念：
 
-- **源路径 & 目标路径**：rsync 支持本地与远端的互传，因此使用源路径和目标路径的明确以哪边文件为同步基准。
-- **客户端 & 服务端**：rsync 将本地端称为客户端，将远程端称为服务端。
+- **源路径/目标路径**：rsync 支持本地与远端的互传，因此使用源路径和目标路径的明确以哪边文件为同步基准。
+- **客户端/服务端**：rsync 将本地端称为客户端，将远程端称为服务端。
 
 ## 使用方式
 
 参考手册，rsync 命令有三种使用方式：
 
-### 本地同步：
-```bash
-rsync [OPTION...] SRC... [DEST]
-```
-- **描述**：在本地将源路径下的内容同步到目标路径下。
+!!! info "一、本地同步"
 
-### 通过远程 shell 与服务端通信：
+    ```bash
+    rsync [OPTION...] SRC... [DEST]
+    ```
+    在本地将源路径下的内容同步到目标路径下。
 
-#### 拉取（Pull）：
-```bash
-rsync [OPTION...] [USER@]HOST:SRC... [DEST]
-```
-- **描述**：以某用户的身份登录到服务端，将远端源路径下的内容同步到本地的目标路径下
+!!! info "二、通过远程 shell 与服务端通信"
 
-#### 推送（Push）：
-```bash
-rsync [OPTION...] SRC... [USER@]HOST:DEST
-```
-- **描述**：以某用户的身份登录到服务端，将本地源路径下的内容同步到远端的目标路径下
+    #### 拉取（Pull）：
+    ```bash
+    rsync [OPTION...] [USER@]HOST:SRC... [DEST]
+    ```
+    以某用户的身份登录到服务端，将远端源路径下的内容同步到本地的目标路径下
 
-### 通过 TCP 与服务端的 rsync 守护进程通信：
+    #### 推送（Push）：
+    ```bash
+    rsync [OPTION...] SRC... [USER@]HOST:DEST
+    ```
+    以某用户的身份登录到服务端，将本地源路径下的内容同步到远端的目标路径下
 
-#### 拉取（Pull）：
-```bash
-rsync [OPTION...] [USER@]HOST::SRC... [DEST]
-rsync [OPTION...] rsync://[USER@]HOST[:PORT]/SRC... [DEST]
-```
-- **描述**：通过 rsync 守护进程将远端源路径下的内容同步到本地目标路径下。
-- 在这种情况下，将直接连接到远程的 rsync 守护进程，通常使用 TCP 端口 873。
+!!! info "三、通过 TCP 与服务端的 rsync 守护进程通信"
 
-#### 推送（Push）：
-```bash
-rsync [OPTION...] SRC... [USER@]HOST::DEST
-rsync [OPTION...] SRC... rsync://[USER@]HOST[:PORT]/DEST
-```
-- **描述**：通过 rsync 守护进程将本地源路径下的内容同步到远端的目标路径下。
-- 在这种情况下，将直接连接到远程的 rsync 守护进程，通常使用 TCP 端口 873。
+    #### 拉取（Pull）：
+    ```bash
+    rsync [OPTION...] [USER@]HOST::SRC... [DEST]
+    rsync [OPTION...] rsync://[USER@]HOST[:PORT]/SRC... [DEST]
+    ```
+
+    !!! info ""
+
+        - 通过 rsync 守护进程将远端源路径下的内容同步到本地目标路径下。
+        - 在这种情况下，将直接连接到远程的 rsync 守护进程，通常使用 TCP 端口 873。
+
+    #### 推送（Push）：
+    ```bash
+    rsync [OPTION...] SRC... [USER@]HOST::DEST
+    rsync [OPTION...] SRC... rsync://[USER@]HOST[:PORT]/DEST
+    ```
+
+    !!! info ""
+
+        - 通过 rsync 守护进程将本地源路径下的内容同步到远端的目标路径下。
+        - 在这种情况下，将直接连接到远程的 rsync 守护进程，通常使用 TCP 端口 873。
 
 !!! note "小结"
 
     - rsync 针对的是本地与远端之间的文件同步
     - rsync 支持远程 shell 通信和 TCP 通信两种通信方式，后者通过 rsync 守护进程进行通信。
-    - rsync 的命令格式为：rsync 选项 源路径 目标路径，通过 `User`, `@`, `HOST` 这些额外信息来区分远端和本地端
+    - rsync 的命令格式为：**rsync [选项] [源路径] [目标路径]**，通过 `User`, `@`, `HOST` 这些额外信息来区分远端和本地端
+
+## 常用可选项(OPTION)
+TODO
 
 ## 实际场景
 
 !!! info "场景1"
 
-    需要在两台 Linux 服务器之间进行文件传输，将服务器 A 上的 /path/to/source_dir 文件夹内容传输到服务器 B 上的 /path/to/sync_dir 文件夹下。这两台服务器之间是连通的，服务器 A 使用密码登录，端口设置为 1111，服务器 B 禁用了密码登录，只能使用密钥登录，端口设置为 2222。
+    本地主机可以登录到两台 Linux 服务器 A 和 B 上，现在需要在两台服务器之间进行文件传输：将服务器 A 上的 `/path/to/source_dir` 文件夹内容传输到服务器 B 上的 `/path/to/sync_dir` 文件夹下。其中，服务器 A 使用密码登录，端口设置为 1111，服务器 B 禁用了密码登录，只能使用密钥登录，端口设置为 2222。
 
+??? tips "解决方案1: rsync ssh Push"
 
-```bash
-rsync -azv -e "ssh -p 2222" /path/to/source_dir {User}@{Server B IP}:/path/to/sync_dir
-```
+    从 Server A 推送文件到 Server B，这需要 Server A 能够远程登录到 Server B。由于 B 禁用了密码登录，需要将 A 上的公钥放到 B 的 `.ssh/authorized_keys` 中，然后在 A 上执行对应格式的命令如下：
+    ```bash
+    rsync -azv -e "ssh -p 2222" /path/to/source_dir {User name}@{Server B IP}:/path/to/sync_dir
+    ```
+
+??? tips "解决方案2: rsync ssh Pull"
+
+    从 Server B 推送文件到 Server A，这需要 Server B 能够远程登录到 Server A。这里 A 没有禁止密码登录，所以可以直接在 B 中执行下面的命令：
+    ```bash
+    rsync -azv -e "ssh -p 1111" {User name}@{Server A IP}:/path/to/source_dir /path/to/sync_dir 
+    ```
+
+!!! info "场景2"
+
+    该博客在一台 2核2G 的云服务器上使用 neovim 编写，编写时希望利用 mkdocs 实时同步修改的功能查看本次修改对构建的页面的影响，然而 2核2G 的云服务器在使用 nvim 编写博客时已经显的比较吃力，再在服务器上跑一个博客程序更是捉襟见肘。幸运的是本地有一台性能良好的主机，因此计划将博客的编写转移到本地，通过 rsync 将修改同步到云服务器上，这样云服务器只需要负责构建页面即可。
+
+??? tips "解决方案1: rsync ssh Pull + ssh + lua script"
+TODO
