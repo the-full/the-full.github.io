@@ -1,12 +1,11 @@
 ---
 draft: false
-search:
-  exclude: true
 date:
   created: 2025-01-01
   updated: 2025-01-03
   updated: 2025-01-04
   updated: 2025-01-12
+  updated: 2025-01-13
 categories:
   - Learning
 tags:
@@ -16,14 +15,14 @@ authors:
   - zhazi
 ---
 
-# LLM 学习：Day1 - RAG
+# LLM 学习：Step1 - TinyRAG
 
 !!! abstract ""
 
     年末回顾这一年，感觉已经开始落后于时代。一直在做着科研，但所研究方向和主流渐行渐远；一直在尝试使用 ai 工具提高效率，但总是对其背后的技术仍是一知半解。这么一年过去，惊觉自己已经错过了太多。为了避免脱离时代，新的一年就以学习当前 LLM 的相关技术开始吧。
 
-    Day1 计划：在服务器上部署一个简单的 RAG 服务，其知识库内容为本篇以及后续的学习笔记，方便之后回顾。  
-    Day2 计划：完成这篇博客
+    计划：在服务器上部署一个简单的 RAG 服务，其知识库内容为本篇以及后续的学习笔记，方便之后回顾。  
+    后续：完成这篇博客
 
 ??? notes "RAG"
 
@@ -54,9 +53,9 @@ RAG 的思路是：当用户提出一个问题时，系统首先从知识库中�
 
     Make it **work**, make it **right**, make it **fast**.
 
-遵循 WRF 原则，先让 RAG 在我的服务器上工作起来，[Datawhile](https://github.com/datawhalechina) 的 [TinyRAG](https://github.com/datawhalechina/tiny-universe/tree/main/content/TinyRAG) 项目就很适合。理论上在服务器上跑通 TinyRAG 后给它做成一个 systemd 服务自动运行就可以了，不过 2核2G 的服务器配置还是太捉襟见肘了，甚至难以在本地进行词嵌入处理。所以最终采用全 API 方案：词嵌入调用智谱 AI 的 API 来完成，对话模型调用近期备受关注的 DeepSeek v3 的 API 来实现（主要是注册送的免费 token 多）。
+遵循 WRF 原则，计划先让 RAG 在我的服务器上工作起来。在这一点上 [Datawhile](https://github.com/datawhalechina) 的 [TinyRAG](https://github.com/datawhalechina/tiny-universe/tree/main/content/TinyRAG) 项目就很合适。理论上在服务器上跑通 TinyRAG 后给它做成一个 systemd 服务自动运行就可以了。不过 2核2G 的服务器配置还是太捉襟见肘了，甚至难以在本地进行词嵌入处理。所以最终采用了全 API 方案：词嵌入通过调用智谱AI的 API 来完成，对话模型调用近期备受关注的 DeepSeek-v3 的 API 来实现（主要是注册送的免费 token 多）。
 
-确定了技术方案后要做的事情就清晰多了，先上对应平台申请 API Key 配置到 `.env` 文件中，然后对代码做一些简单的微调，主要是添加 DeepSeek v3 作为对话模型。得益于 DeepSeek 对 OpenAI API 的全面兼容，可以简单的复用原代码中 `OpenAIChat` 的部分来实现：
+确定了技术方案后要做的事情就清晰多了，先上对应平台申请 API Key 配置到 `.env` 文件中，然后对代码做一些简单的微调，主要是添加 DeepSeek v3 作为对话模型。这里得益于 DeepSeek 对 OpenAI API 的全面兼容，我们可以简单的复用原代码中 `OpenAIChat` 的部分来实现：
 
 ??? note "题外话"
 
