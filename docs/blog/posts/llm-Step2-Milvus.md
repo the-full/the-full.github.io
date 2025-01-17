@@ -22,15 +22,15 @@ authors:
     计划：升级 TinyRAG 的存储方案，使用向量数据库 Milvus 管理数据  
     后续：进一步学习 Milvus，然后完成这篇博客
 
-??? notes "Milvus"
+    ??? notes "Milvus"
 
-    Milvus 是一个高性能、高扩展性的**向量数据库**，Milvus 支持多种数据类型和搜索功能，包括 ANN 搜索、过滤搜索和全文搜索等。Milvus 的设计考虑了硬件优化和高效的搜索引擎，因而具有良好的性能。此外，Milvus 还提供了多种部署模式，以适应不同的数据规模和应用需求。
+        Milvus 是一个高性能、高扩展性的**向量数据库**，Milvus 支持多种数据类型和搜索功能，包括 ANN 搜索、过滤搜索和全文搜索等。Milvus 的设计考虑了硬件优化和高效的搜索引擎，因而具有良好的性能。此外，Milvus 还提供了多种部署模式，以适应不同的数据规模和应用需求。
 
 
-??? info "参考文献"
+    ??? info "参考文献"
 
-    - [【【上集】向量数据库技术鉴赏】](https://www.bilibili.com/video/BV11a4y1c7SW)
-    - [【【下集】向量数据库技术鉴赏】](https://www.bilibili.com/video/BV1BM4y177Dk)
+        - [【【上集】向量数据库技术鉴赏】](https://www.bilibili.com/video/BV11a4y1c7SW)
+        - [【【下集】向量数据库技术鉴赏】](https://www.bilibili.com/video/BV1BM4y177Dk)
 <!-- more -->
 
 ## 为什么需要向量数据库？

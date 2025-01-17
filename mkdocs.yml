@@ -10,30 +10,35 @@ theme:
   language: zh
   font: false
   palette:
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      primary: white
+      accent: red
+      toggle:
+        icon: material/weather-sunny
+        name: 切换至深色模式
+
     - scheme: slate
       media: "(prefers-color-scheme: dark)"
       primary: blue
       accent: blue
       toggle:
-        icon: material/weather-sunny
-        name: 切换至浅色模式
-    - scheme: default
-      media: "(prefers-color-scheme: light)"
-      primary: indigo
-      accent: indigo
-      toggle:
         icon: material/weather-night
-        name: 切换至深色模式
+        name: 切换至浅色模式
 
   features:
     - content.action.edit
     - content.action.view
     - content.code.copy
     - content.tooltips
-    - navigation.footer
+    # - navigation.footer
     - navigation.indexes
     - navigation.top
     - navigation.tracking
+
+  font:
+    text: 'Fira Sans'
+    code: 'Fira Mono'
 
 
 plugins:
@@ -52,6 +57,7 @@ plugins:
 
 
 markdown_extensions:
+  - tables
   - admonition
   - attr_list
   - footnotes
@@ -79,7 +85,8 @@ extra:
     - icon: fontawesome/brands/github
       name: zhazi on github
       link: https://github.com/the-full
-
+  copyright: '<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh">CC BY-SA 4.0</a> 和 <a href="https://github.com/zTrix/sata-license">SATA</a>'
+  pagetime: 'on'
 
 extra_css:
   - _static/css/extra.css

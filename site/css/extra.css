@@ -12,8 +12,6 @@
 
 .darkcyan, .darkcyan-important { color: darkcyan !important; }
 
-:root { --md-text-font: Roboto Mono; JetBrains Mono; --md-code-font: Roboto Mono; }
-
 .md-typeset { font-feature-settings: "kern" 0; font-size: 0.7rem; }
 
 .md-typeset #references, .md-typeset .no-underline { margin-bottom: 0; padding-bottom: 0; border: none; }

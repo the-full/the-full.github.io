@@ -24,16 +24,16 @@ authors:
     计划：在服务器上部署一个简单的 RAG 服务，其知识库内容为本篇以及后续的学习笔记，方便之后回顾。  
     后续：完成这篇博客
 
-??? notes "RAG"
+    ??? notes "RAG"
 
-    RAG（Retrieval-Augmented Generation，检索增强生成）是一种通过结合检索技术来提升大语言模型（LLM）回答质量的技术框架。其在 Facebook 在 2020 年发表的论文[《Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks》](https://arxiv.org/pdf/2005.11401v4) 中被提出，应用于知识敏感的 NLP 任务，如知识问答。
+        RAG（Retrieval-Augmented Generation，检索增强生成）是一种通过结合检索技术来提升大语言模型（LLM）回答质量的技术框架。其在 Facebook 在 2020 年发表的论文[《Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks》](https://arxiv.org/pdf/2005.11401v4) 中被提出，应用于知识敏感的 NLP 任务，如知识问答。
 
-    RAG 将问题求解划分为**检索**和**生成**两阶段，先通过检索，查找与问题相关的文档，再将文档和问题一并输入模型，由模型推理给出最终的答案，从而解决模型无法扩展知识和产生“幻觉”的问题。
+        RAG 将问题求解划分为**检索**和**生成**两阶段，先通过检索，查找与问题相关的文档，再将文档和问题一并输入模型，由模型推理给出最终的答案，从而解决模型无法扩展知识和产生“幻觉”的问题。
 
-??? info "参考文献"
+    ??? info "参考文献"
 
-    - [TinyRAG](https://github.com/datawhalechina/tiny-universe/tree/main/content/TinyRAG)
-    - [一文读懂：大模型RAG（检索增强生成）含高级方法](https://www.zhihu.com/tardis/zm/art/675509396?source_id=1003)
+        - [TinyRAG](https://github.com/datawhalechina/tiny-universe/tree/main/content/TinyRAG)
+        - [一文读懂：大模型RAG（检索增强生成）含高级方法](https://www.zhihu.com/tardis/zm/art/675509396?source_id=1003)
 <!-- more -->
 
 ## 为什么需要 RAG？
@@ -45,6 +45,9 @@ LLM 的回答主要依赖于两类知识：首先是**参数化知识**，即模
 RAG 的思路是：当用户提出一个问题时，系统首先从知识库中检索出与问题最相关的文档片段，然后将这些文档片段与问题一起输入到语言模型中，由模型生成最终的答案。然后，为了衡量文档片段的相似度，会使用向量检索技术，通过词嵌入将问题和文档片段都转换为向量表示，并通过计算向量之间的相似度来找到最相关的内容。参考下图:
 
 ![RAG 提示词生成流程](./images/RAG 提示词生成流程.png)
+
+RAG 提示词生成流程
+{: .caption }
 
 
 ## 部署一个简单的 RAG
@@ -59,7 +62,7 @@ RAG 的思路是：当用户提出一个问题时，系统首先从知识库中�
 
 ??? note "题外话"
 
-    这种兼容使得我们可以在许多 AI 应用中替换 ChatGPT，参考这个项目：[awesome-deepseek-integration](https://github.com/deepseek-ai/awesome-deepseek-integration/tree/main?tab=readme-ov-file)，只能说要搞个能用的 OpenAI API Key 太难了 QAQ。
+    这种兼容使得我们可以在许多 AI 应用中替换 ChatGPT，参考这个项目：[awesome-deepseek-integration](https://github.com/deepseek-ai/awesome-deepseek-integration/tree/main?tab=readme-ov-file)。要搞个能用的 OpenAI API Key 太难了 QAQ。
 
 ```python title="LLM.py" linenums="1" hl_lines="2 8 9"
 class DeepSeekChat(BaseModel):
