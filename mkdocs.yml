@@ -57,6 +57,7 @@ plugins:
       pagination_per_page: 5
       draft: false
   - tags
+  - glightbox
 
 
 markdown_extensions:
