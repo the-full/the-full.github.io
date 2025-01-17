@@ -16,11 +16,16 @@ authors:
 
     ModelNet40 是三维对抗攻防领域中一个非常常用的数据集，绝大多数方法都会在该数据集上进行评估。然而，在阅读相关论文时，会发现这个数据集存在许多变体，通常是前人工作中预处理后的版本，这导致论文或代码中提到 ModelNet40 数据集时往往具有多义性。另一方面，最近在尝试复现点云对抗防御方法 **IF-Defense** 时，需要在 ModelNet40 的基础上构建一个变体数据集，但在运行作者的脚本时遇到了一些问题，因此需要梳理其构建细节。
 
-    本文将记录 ModelNet40 的各种变体及其构建细节，但不会涉及数据集的存储细节，也不会包括如何实现 DataSet 类来读取数据的内容。
+    本文将记录 ModelNet40 的各种变体及其构建细节，但不会涉及数据集的存储细节，也不会包括如何实现 DataSet 类来读取数据的内容。此外，本文还会记录一些因为数据集差异导致的坑。
 
-??? info "参考文献"
+    ??? info "参考文献"
 
-    - TODO 
+        - [ModelNet 介绍](https://modelnet.cs.princeton.edu/)
+        - [PoinNet 仓库描述](https://github.com/charlesq34/pointnet)
+        - [PoinNet++ 仓库描述](https://github.com/charlesq34/pointnet2)
+        - [PoinNet++ 仓库描述](https://github.com/charlesq34/pointnet2)
+        - [GeoA$^3$ 仓库描述](https://github.com/Gorilla-Lab-SCUT/GeoA3/tree/master)
+        - [IF-Defense 仓库描述](https://github.com/Wuziyi616/IF-Defense/tree/main)
 <!-- more -->
 
 ## 源头: ModelNet
@@ -82,7 +87,7 @@ ModelNet数据集文件结构
 
     作者提供了 `Onet/Conv-Onet` 模型的预训练权重。如果仅需使用 IF-Defense 进行推理或测试，无需重新构建数据集。以下内容仅适用于需要重新训练模型的情况。
 
-#### 问题：不完整的构建过程
+### 问题：不完整的构建过程
 
 作者提供了他创建数据集过程中使用的脚本，但这些脚本只存在硬编码路径、无法直接组合使用的问题，见 `IF-Defense/ONet/data_proc/build.sh` 第 47 行：
 
@@ -116,19 +121,25 @@ mkdir -p $build_path_c/0_in \
 
 所以，在没有人工介入时，即使调整好路径设置也会面临 `build.sh` 和 `make_watertight.py` 循环依赖的问题，此外，`build.sh` 中也没有给出 `0_in` 文件夹下文件的创建过程。
 
-#### 溯源：Occupancy Networks 的数据集构建过程
+### 溯源：Occupancy Networks 的数据集构建过程
 
 作者的脚本是在从`Occupancy Networks` 的脚本（见 `occupancy_networks/scripts`) 修改而来的，原脚本处理的是 `ShapeNet` 数据集，构建流程如下图所示：
 
 ![Onet-ShapeNet 构建流程图](./images/Onet-ShapeNet 构建流程图.png)
 
-核心是三个 bash 脚本，`config.sh` 用于设置全局变量，主要是指定路径、类别名称、线程数等；`build.sh` 负责将网格数据转化为水密网格；`intsall.sh` 负责最终组装数据集并对数据进行切分。`0_in` 中的数据是原数据集的 `.off` 文件，按类别分到不同文件夹下。我推测这里是使用了整个数据集的模型，因为最后创建数据集时是从所有数据中划分测试集，而不是沿用原数据集的测试集。
+核心是三个 bash 脚本（图中灰色部分）：
+
+- `config.sh` 用于设置全局变量，主要是指定路径、类别名称、线程数等；
+- `build.sh` 负责将网格数据转化为水密网格；
+- `intsall.sh` 负责最终组装数据集并对数据进行切分。
+
+外部数据（图中浅红色部分）包含两部分，一个是其他工作的预处理数据集（不重要），另一个是 `0_in`，它由 ModelNet40 源数据集的 `.off` 文件构成，将文件按类别分到不同文件夹下。我推测这里是使用了整个数据集的模型，因为最后创建数据集时是从所有数据中划分测试集，而不是沿用原数据集的测试集。
 
 上图中 `CHOY2016_PATH` 用于指定 3D-R2N2 (Choy et al. 2016, [arixv 链接](https://arxiv.org/abs/1604.00449), [github 链接](https://github.com/chrischoy/3D-R2N2)) 预处理的数据集的路径，对于我们目标的任务场景而言，并不需要这部分信息，因此可以移除。另一方面，我们不需要深度图像信息，而创建水密网格的部分可以用 `Manifold` 替代，进一步规避了一些额外的预处理步骤。简化后的流程图如下：
 
 ![Onet-ModelNet40 构建流程图](./images/Onet-ModelNet40 构建流程图.png)
 
-#### 重整：一个完整的构建过程
+### 重整：一个完整的构建过程
 
 三个核心脚本的运行依赖于 Manifold 和几个 python 文件，后者除了依赖第三方包还依赖于 Occupancy Networks 作者写的 `im2mesh` 包，需要运行 `setup.py` 脚本安装。此外，还需要下载相应数据集并在 `config.sh` 中进行正确的配置。
 
@@ -138,9 +149,9 @@ mkdir -p $build_path_c/0_in \
 
     简单来说，整个安装过程就是两步：
 
-    ``` bash
-    python setup.py build_ext --inplace
-    python install
+    ```console 
+    $ python setup.py build_ext --inplace
+    $ python install
     ```
 
     这两行命令起到的效果就是依次编译 `im2mesh.utils` 下的 `lib_*` 文件并构建相应模块，`--inplace` 指定动态链接库放在 lib* 所在的文件夹下，之后可以使用 python 调用相关接口。需要注意的是，`sample_mesh.py` 中使用的 `libmesh` 没有出现在 IF-Defense 作者提供的 `im2mesh` 中，可能作者使用其他方法替代了 `check_mesh_contains` 函数（我对这个不太了解），因此这里需要从原仓库中借过来这部分代码（`setup.py` 也要补充）。
@@ -150,3 +161,12 @@ mkdir -p $build_path_c/0_in \
     这里讨论一下 `sample_mesh.py` 中的第 9 行的 **TODO** 怎么进行。按原来的 `setup.py` 脚本安装的话， `libmesh` 中其实并不包含 `check_mesh_contains` 函数，只有编译构建的模块 `triangle_hash`，或者说 `check_mesh_contains` 函数没有被 "安装"。作者的解决方案是硬编码包搜索路径，拓展 `PYTHONPATH` 从而可以找到这个函数。这个方案的问题是 `sample_mesh.py` 和 `im2mesh` 的相对位置被硬编码，产生了不必要的耦合。
 
     解决方法是简单的，问题产生的原因是 `setup.py` 中只指明了 `libmesh.triangle_hash` 是一个模块，而没有指明 `libmesh` 是一个包，因此只需要在 `setup.py` 的 `setup` 函数中增加一行 `packages=find_packages()` 让程序发现 `libmesh` 是一个包再重新安装就可以了。
+
+
+## 一些小坑
+
+TODO
+
+### 类别不一致
+
+### 轴对齐方向不一致
