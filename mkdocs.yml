@@ -4,6 +4,9 @@
 site_name: Zhazi's Memo
 site_description: A personal knowledge base for storing notes, research, and technical documentation
 site_author: Zhazi
+repo_name: Memo
+repo_url: https://github.com/the-full/the-full.github.io
+
 
 theme:
   name: material
@@ -17,7 +20,6 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: 切换至深色模式
-
     - scheme: slate
       media: "(prefers-color-scheme: dark)"
       primary: blue
@@ -25,9 +27,11 @@ theme:
       toggle:
         icon: material/weather-night
         name: 切换至浅色模式
-
+  # include_search_page: false # NOTE: 东西多了以后在开启
+  # search_index_only: true
   features:
     - content.action.edit
+    # - content.action.tabs # NOTE: 需要配合 nav 使用
     - content.action.view
     - content.code.copy
     - content.tooltips
@@ -35,7 +39,6 @@ theme:
     - navigation.indexes
     - navigation.top
     - navigation.tracking
-
   font:
     text: 'Fira Sans'
     code: 'Fira Mono'
@@ -58,9 +61,11 @@ plugins:
 
 markdown_extensions:
   - tables
+  - abbr
   - admonition
-  - attr_list
   - footnotes
+  - attr_list
+  - def_list
   - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.keys
@@ -77,8 +82,13 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
   - pymdownx.snippets
 
+watch:
+  - includes
 
 extra:
   social:
