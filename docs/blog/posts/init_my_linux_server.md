@@ -184,7 +184,7 @@ $ mv fzf ~/.local/usr/bin/
 
 ??? tip "zoxide 简介"
 
-    TODO
+    Snap 是 Canonical 公司开发的软件打包和部署系统，主要用于 Ubuntu 系统。它的主要特点于 Flatpak 类似，提供了沙盒化的应用程序环境，简化了软件安装和更新过程。
 
 
 ## 二、安装其他包管理器
