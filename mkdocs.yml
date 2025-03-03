@@ -29,12 +29,14 @@ theme:
         name: 切换至浅色模式
   # include_search_page: false # NOTE: 东西多了以后在开启
   # search_index_only: true
+  
   features:
     - content.action.edit
-    # - content.action.tabs # NOTE: 需要配合 nav 使用
     - content.action.view
     - content.code.copy
     - content.tooltips
+    - navigation.tabs
+    - navigation.instant
     # - navigation.footer
     - navigation.indexes
     - navigation.top
@@ -42,22 +44,24 @@ theme:
   font:
     text: 'Fira Sans'
     code: 'Fira Mono'
+  language: zh
 
 
+
+
+# NOTE: 没影响的，反正之后都要删除的
 plugins:
   - search
   - blog:
+      blog_dir: algorithm
       archive_date_format: MMMM yyyy
-      categories_allowed:
-        - Reading    # 读点新东西 (带有理解) => !!! 导言[必选] + ??? 文献信息
-        - Learning   # 学点新东西 (带有实践) => !!! 导言[可选] + ??? 参考文献
-        - Summary    # 总结知识 (带有系统化的知识) => 导言 + 参考文献
-        - Memo       # 备忘录 (搬运的内容，将分散的知识集中化) 
-        - Misc       # 杂项，不知道该归类为哪种 => 自由设置
       pagination_per_page: 5
       draft: false
   - tags
   - glightbox
+  # - git-committers:
+  #     repository: the-full/the-full.github.io
+  #     branch: main
 
 
 markdown_extensions:
@@ -86,7 +90,9 @@ markdown_extensions:
   - pymdownx.snippets:
       auto_append:
         - includes/abbreviations.md
-  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 watch:
   - includes
@@ -108,7 +114,21 @@ extra_javascript:
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
 
+# Contents
 nav:
   - Home: index.md
-  - Blog:
-    - blog/index.md
+  - 记录:
+    - 导览: record/index.md
+    - waymo 数据预处理遇到的问题: record/waymo_perprocess.md
+    - 基于 OpenPCDet 在 Waymo 数据集上训练模型: record/openpcdet_waymo_training.md
+    - 对 Waymo 数据集做加工: record/openpcdet_waymo_process.md
+    - 常见问题归档: record/common_problem.md
+  # - 笔记:
+    # TODO
+  - 论文:
+    - ACE: paper/ACE.md
+    - GradCraft: paper/GradCraft.md
+    - Occupancy Network: paper/occupancy_network.md
+  - 算法:
+    - algorithm/index.md
+    # - Leetcode 415. 自由之路: algorithm/leetcode-514.md

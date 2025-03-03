@@ -6,6 +6,7 @@ date:
   updated: 2025-01-04
   updated: 2025-01-12
   updated: 2025-01-13
+  updated: 2025-01-22
 categories:
   - Learning
 tags:
@@ -56,13 +57,13 @@ RAG 提示词生成流程
 
     Make it **work**, make it **right**, make it **fast**.
 
-遵循 WRF 原则，计划先让 RAG 在我的服务器上工作起来。在这一点上 [Datawhile](https://github.com/datawhalechina) 的 [TinyRAG](https://github.com/datawhalechina/tiny-universe/tree/main/content/TinyRAG) 项目就很合适。理论上在服务器上跑通 TinyRAG 后给它做成一个 systemd 服务自动运行就可以了。不过 2核2G 的服务器配置还是太捉襟见肘了，甚至难以在本地进行词嵌入处理。所以最终采用了全 API 方案：词嵌入通过调用智谱AI的 API 来完成，对话模型调用近期备受关注的 DeepSeek-v3 的 API 来实现（主要是注册送的免费 token 多）。
+遵循 MMM 原则，计划先让 RAG 在我的服务器上工作起来。在这一点上 [Datawhile](https://github.com/datawhalechina) 的 [TinyRAG](https://github.com/datawhalechina/tiny-universe/tree/main/content/TinyRAG) 项目就很合适。理论上在服务器上跑通 TinyRAG 后给它做成一个 systemd 服务自动运行就可以了。不过 2核2G 的服务器配置还是太捉襟见肘了，甚至难以在本地进行词嵌入处理。所以最终采用了全 API 方案：词嵌入通过调用智谱AI的 API 来完成，对话模型调用近期备受关注的 DeepSeek-v3 的 API 来实现（主要是注册送的免费 token 多）。
 
-确定了技术方案后要做的事情就清晰多了，先上对应平台申请 API Key 配置到 `.env` 文件中，然后对代码做一些简单的微调，主要是添加 DeepSeek v3 作为对话模型。这里得益于 DeepSeek 对 OpenAI API 的全面兼容，我们可以简单的复用原代码中 `OpenAIChat` 的部分来实现：
+2025/01/21 补充：发现 ChatGLM-Flash 不要钱，不过回答质量有点不稳定，先保持不变。
 
-??? note "题外话"
+确定了技术方案后要做的事情就清晰多了，先上对应平台申请 API Key 配置到 `.env` 文件中，然后对代码做一些简单的微调，主要是添加 DeepSeek v3 作为对话模型。这里得益于 DeepSeek 对 OpenAI API 的全面兼容[^1]，我们可以简单的复用原代码中 `OpenAIChat` 的部分来实现：
 
-    这种兼容使得我们可以在许多 AI 应用中替换 ChatGPT，参考这个项目：[awesome-deepseek-integration](https://github.com/deepseek-ai/awesome-deepseek-integration/tree/main?tab=readme-ov-file)。要搞个能用的 OpenAI API Key 太难了 QAQ。
+[^1]: 这种兼容使得我们可以在许多 AI 应用中替换 ChatGPT，参考这个项目：[awesome-deepseek-integration](https://github.com/deepseek-ai/awesome-deepseek-integration/tree/main?tab=readme-ov-file)。（要搞个能用的 OpenAI API Key 太难了 QAQ。）
 
 ```python title="LLM.py" linenums="1" hl_lines="2 8 9"
 class DeepSeekChat(BaseModel):
@@ -129,12 +130,17 @@ $ sudo systemctl restart tinyrag # 启动 tinyrag 服务
 $ sudo systemctl enable tinyrag  # 设置 tinyrag 服务开机启动
 ```
 
-简单测试了两个情况:
+简单测试了两个情况[^2]:
 
-**case1: 检索命中**
-![测试检索命中情况](./images/测试检索命中情况.png)
+[^2]: 随着文档的变更，截图中问题的答案已经不再准确了，这里只是在展示 RAG 带来的变化。
 
-**case2: 检索未命中**
-![测试检索未命中情况](./images/测试检索未命中情况.png)
+!!! example "case1: 检索命中"
+
+    ![测试检索命中情况](./images/测试检索命中情况.png)
+
+
+!!! example "case2: 检索未命中"
+
+    ![测试检索未命中情况](./images/测试检索未命中情况.png)
 
 通过上面两个简单的测试可以看出，TinyRAG 运行良好，实现了预期的功能。

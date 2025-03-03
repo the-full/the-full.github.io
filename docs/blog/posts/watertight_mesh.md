@@ -11,12 +11,12 @@ authors:
 
 # 水密网格和非水密网格
 
-!!! abstract ""
+在研究三维对抗中的一项防御方法 IF-Defense 时，遇到一个与曲面相关的概念 "watertight"。这里记录一下这个概念。
 
-    在研究三维对抗中的一项防御方法 IF-Defense 时，遇到一个与曲面相关的概念 "watertight"。这里记录一下这个概念。
+!!! info "参考文献"
+
+    - ["watertight" and "unwatertight" meshes](https://support.einscan.com/en/support/solutions/articles/60000687687--watertight-and-unwatertight-meshes)。
 <!-- more -->
-
-参考文献在[这里](https://support.einscan.com/en/support/solutions/articles/60000687687--watertight-and-unwatertight-meshes)。
 
 ![水密/非水密网格示意图](./images/水密网格示意图.png)
 

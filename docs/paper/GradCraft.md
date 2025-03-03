@@ -4,6 +4,7 @@ date:
   created: 2024-09-01
   updated: 2024-11-01
   updated: 2025-01-02
+  updated: 2025-02-17
 categories:
   - Reading
 tags:
@@ -14,16 +15,11 @@ authors:
 
 # GradCraft: Elevating Multi-task Recommendations through Holistic Gradient Crafting
 
-!!! abstract ""
+**逛知乎时遇到了这篇论文的介绍，感觉能用到我的任务中，在此记录备用。**
 
-    逛知乎时遇到了这篇论文的介绍，感觉能用到我的任务中，因此这里记录一下。
+在多任务学习中，每个 task 都将给出一个梯度，在更新时需要将所有 task 给出的梯度进行聚合，确定一个最终的梯度进行更新。之前研究在聚合梯度时，对梯度大小和梯度方向的处理存在不足，论文针对这一不足提出了一种动态调整梯度（包括大小和方向）的聚合方法 **GradCraft**。本文只关注两个问题：**1.** GradCraft 算法流程？**2.** 代码如何与算法对应？
 
-    在多任务学习中，每个 task 都将给出一个梯度，在更新时需要将所有 task 给出的梯度进行聚合，确定一个最终的梯度进行更新。之前研究在聚合梯度时，对梯度大小和梯度方向的处理存在不足，论文针对这一不足提出了一种动态调整梯度（包括大小和方向）的聚合方法 GradCraft。本文只关注两个问题：
-
-    1. GradCraft 算法流程？
-    2. 代码如何与算法对应？
-
-??? info "论文基本信息"
+??? info "论文信息"
 
     - 论文链接：[arxiv](https://arxiv.org/abs/2407.19682)
     - 中文版本：[知乎](https://zhuanlan.zhihu.com/p/715709607)
