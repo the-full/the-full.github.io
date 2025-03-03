@@ -26,4 +26,5 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mkdocs-material 
+      - run: pip install git+https://github.com/johannesjo/glightbox.git  # 安装glightbox插件
       - run: mkdocs gh-deploy --force
