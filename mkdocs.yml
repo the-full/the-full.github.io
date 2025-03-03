@@ -123,8 +123,11 @@ nav:
     - 基于 OpenPCDet 在 Waymo 数据集上训练模型: record/openpcdet_waymo_training.md
     - 对 Waymo 数据集做加工: record/openpcdet_waymo_process.md
     - 常见问题归档: record/common_problem.md
-  # - 笔记:
-    # TODO
+  - 笔记:
+    - ssh 笔记: note/ssh.md
+    - rsync 笔记: note/rsync.md
+    - ModelNet40 归纳: note/modelnet40.md
+    - Linux 有用软件归纳: note/useful_linux_app.md
   - 论文:
     - ACE: paper/ACE.md
     - GradCraft: paper/GradCraft.md

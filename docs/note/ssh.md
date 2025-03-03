@@ -1,8 +1,9 @@
 ---
-draft: true
+draft: false
 date:
   created: 2024-09-18
   updated: 2025-01-02
+  updated: 2025-03-03
 categories:
   - Memo
 authors:
@@ -11,12 +12,15 @@ authors:
 
 # 笔记：ssh 相关
 
-!!! info "参考文献"
+**TODO: 重新整理一下再写，有点乱**
+
+SSH（Secure SHell）是一个网络协议，用于加密方式远程登录到服务器，以及在服务器之间进行加密的数据传输。
+
+??? info "参考文献"
 
     1. [CSDN：ssh-keygen 的 详解](https://blog.csdn.net/nb1253587023/article/details/126403674)
     2. [博客园：Linux ssh命令详解](https://www.cnblogs.com/ftl1012/p/ssh.html)
     3. [知乎：一文彻底搞懂SSH连接过程](https://zhuanlan.zhihu.com/p/613089875)
-<!-- more -->
 
 ## 非对称加密
 
@@ -44,9 +48,7 @@ authors:
 
 ## ssh
 
-SSH（Secure SHell）是一个网络协议，用于加密方式远程登录到服务器，以及在服务器之间进行加密的数据传输。
-
-!!! quate "见参考文献 2.（有改动）"
+!!! quote "见参考文献 2.（有改动）"
 
     ssh 服务是一个守护进程(demon)，系统后台监听客户端的连接，ssh 服务端的进程名为 sshd，负责实时监听客户端的请求(IP 22端口)，包括公钥交换等信息。
 

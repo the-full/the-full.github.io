@@ -4,6 +4,7 @@ date:
   created: 2024-09-01
   updated: 2025-01-02
   updated: 2025-01-17
+  updated: 2025-03-03
 categories:
   - Summary 
 authors:
@@ -65,11 +66,7 @@ ModelNet数据集文件结构
 
 ## 预处理版本2: ModelNet40 Resampled
 
-该版本是 Charles R. Qi 在 [PointNet++](https://github.com/charlesq34/pointnet2) 中训练模型时使用的。与 PointNet 的版本相比，主要区别在于采样点的数量和处理方式。每个点云包含一万个采样点，并且包含了法线特征（xyz 坐标 + 法线，共 6 维），以更好地捕捉几何特征。
-
-??? tip "构建细节"
-  
-    与 ModelNet40 Hdf5 的构建过程类似，主要区别在于采样点数量增加至 10,000 个，并额外添加了法线向量信息。在有曲面信息的前提下，实现起来应该并不困难。
+该版本是 Charles R. Qi 在 [PointNet++](https://github.com/charlesq34/pointnet2) 中训练模型时使用的。与 PointNet 的版本相比，主要区别在于采样点的数量和处理方式。每个点云包含一万个采样点，并且包含了法线特征（xyz 坐标 + 法线，共 6 维），以更好地捕捉几何特征。总的来说，与 ModelNet40 Hdf5 的构建过程类似，主要区别在于采样点数量增加至 10,000 个，并额外添加了法线向量信息。在有曲面信息的前提下，实现起来应该并不困难。
 
 
 ## 子集版本: ModelNet 250 Sample
@@ -78,7 +75,7 @@ ModelNet数据集文件结构
 
 ## 水密网格版本：ModelNet40 for Onet
 
-该版本来自于三维点云对抗防御方向的经典文章 `IF-Defense`（[github 链接](https://github.com/Wuziyi616/IF-Defense/tree/main)）。作者需要训练一个将点云转化为网格的网络，该网络基于 `Occupancy Network`（[github 链接](https://github.com/autonomousvision/occupancy_networks)）。训练时的监督信号是判断空间中某一点位于模型内部还是外部（参考 [占据网络](./occupancy_network.md)），因此需要确保训练使用的曲面是封闭的，即水密网格。`IF-Defense` 的作者参考了这个 [issue](https://github.com/autonomousvision/occupancy_networks/issues/27)，使用 `Manifold`（[github 链接](https://github.com/hjwdzh/Manifold)）将网格转化为水密网格，从而简化了预处理步骤。
+该版本来自于三维点云对抗防御方向的经典文章 [IF-Defense](https://github.com/Wuziyi616/IF-Defense/tree/main)。作者需要训练一个将点云转化为网格的网络，该网络基于 [Occupancy Network](https://github.com/autonomousvision/occupancy_networks)。训练时的监督信号是判断空间中某一点位于模型内部还是外部（参考 [占据网络](./occupancy_network.md)），因此需要确保训练使用的曲面是封闭的，即水密网格。`IF-Defense` 的作者参考了这个 [issue](https://github.com/autonomousvision/occupancy_networks/issues/27)，使用 [Manifold](https://github.com/hjwdzh/Manifold) 将网格转化为水密网格，从而简化了预处理步骤。
 
 !!! warning "注意"
 
@@ -162,7 +159,7 @@ mkdir -p $build_path_c/0_in \
 
 ## 一些小坑
 
-TODO
+**TODO**
 
 ### 类别不一致
 
