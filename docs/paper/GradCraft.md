@@ -5,6 +5,7 @@ date:
   updated: 2024-11-01
   updated: 2025-01-02
   updated: 2025-02-17
+  updated: 2025-03-09
 categories:
   - Reading
 tags:
@@ -112,7 +113,7 @@ $$
 
 ## 代码分析
 
-涉及到对梯度的操作，自然要考虑一下优化器的处理。基于加权的方法通常在求损失时进行加权从而避免了对梯度的直接操作，进而避免了对优化器的额外设置。相反，涉及梯度方向的方法就不得不对优化器进行额外的设置了。看仓库代码的思路应该是给优化器上一层包装，通过一个自定义 `backward` 过程接管梯度的计算。见代码路径 `GradCraft/models/basemodel.py` 的 287 行:
+涉及到对梯度的操作，自然要考虑一下优化器的处理。基于加权的方法通常在计算损失时进行加权从而对梯度加权，这避免了对梯度的访问，从而避免了对优化器的额外设置。然而，涉及梯度方向的方法就不得不对优化器进行额外的设置了。看仓库代码的思路应该是给优化器上一层包装，通过一个自定义 `backward` 过程接管梯度的计算。见代码路径 `GradCraft/models/basemodel.py` 的 287 行:
 
 ```python title="basemodel.py", hl_lines="3 4 8"
 def customized_optimizer(method, optimizer, num_tasks, hyper=None, device=None):
