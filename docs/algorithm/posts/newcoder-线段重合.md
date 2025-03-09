@@ -34,6 +34,8 @@ authors:
     - $N \le 10^4$
     - $1 \le start, end \le 10^5$
 
+<!-- more -->
+
 ??? example "示例1"
 
     ```console
