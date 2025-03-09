@@ -131,14 +131,14 @@ rsync [OPTION...] SRC... rsync://[USER@]HOST[:PORT]/DEST
 
     本地主机可以登录到两台 Linux 服务器 A 和 B 上，现在需要在两台服务器之间进行文件传输：将服务器 A 上的 `/path/to/source_dir` 文件夹内容传输到服务器 B 上的 `/path/to/sync_dir` 文件夹下。其中，服务器 A 使用密码登录，端口设置为 1111，服务器 B 禁用了密码登录，只能使用密钥登录，端口设置为 2222。
 
-    ??? tip "方案1: 从 A 推送 B"
+    ???+ tip "方案1: 从 A 推送 B"
 
         从 Server A 推送文件到 Server B，这需要 Server A 能够远程登录到 Server B。由于 B 禁用了密码登录，需要将 A 上的公钥放到 B 的 `.ssh/authorized_keys` 中，然后在 A 上执行对应格式的命令如下：
         ```console
         $ rsync -azv -e "ssh -p 2222" /path/to/source_dir {User name}@{Server B IP}:/path/to/sync_dir
         ```
 
-    ??? tip "方案2: 从 B 拉取 A"
+    ???+ tip "方案2: 从 B 拉取 A"
 
         从 Server B 推送文件到 Server A，这需要 Server B 能够远程登录到 Server A。这里 A 没有禁止密码登录，所以可以直接在 B 中执行下面的命令：
         ```console
@@ -149,7 +149,7 @@ rsync [OPTION...] SRC... rsync://[USER@]HOST[:PORT]/DEST
 
     该博客在一台 2核2G 的云服务器上使用 neovim 编写，编写时希望利用 mkdocs 实时同步修改的功能查看本次修改对构建的页面的影响，然而 2核2G 的云服务器在使用 nvim 编写博客时已经显的比较吃力，再在服务器上跑一个博客程序更是捉襟见肘。幸运的是本地有一台性能良好的主机，因此计划将博客的编写转移到本地，通过 rsync 将修改同步到云服务器上，这样云服务器只需要负责构建页面即可。
 
-    ??? tip "方案: 设置按键命令，快速的将本地更新推送到远端"
+    ???+ tip "方案: 设置按键命令，快速的将本地更新推送到远端"
 
         基本思路是将 `ss` 映射为同步操作，自动切换命令模式并执行本地到远端的同步命令。就像下面这样：
 
