@@ -1,0 +1,1433 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A personal knowledge base for storing notes, research, and technical documentation">
+      
+      
+        <meta name="author" content="Zhazi">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>归纳：关于 ModelNet40 数据集 - Zhazi's Memo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Sans:300,300i,400,400i,700,700i%7CFira+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Fira Sans";--md-code-font:"Fira Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../_static/css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modelnet40" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Zhazi&#39;s Memo" class="md-header__button md-logo" aria-label="Zhazi's Memo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zhazi's Memo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              归纳：关于 ModelNet40 数据集
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="red"  aria-label="切换至深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="切换至浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/the-full/the-full.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Memo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../record/" class="md-tabs__link">
+          
+  
+    
+  
+  记录
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../note/ssh/" class="md-tabs__link">
+          
+  
+    
+  
+  笔记
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../paper/ACE/" class="md-tabs__link">
+          
+  
+    
+  
+  论文
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../algorithm/" class="md-tabs__link">
+          
+  
+    
+  
+  算法
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Zhazi&#39;s Memo" class="md-nav__button md-logo" aria-label="Zhazi's Memo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zhazi's Memo
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/the-full/the-full.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Memo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../record/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    记录
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            记录
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../record/waymo_perprocess/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    waymo 数据预处理遇到的问题
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../record/openpcdet_waymo_training/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    基于 OpenPCDet 在 Waymo 数据集上训练模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../record/openpcdet_waymo_process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    对 Waymo 数据集做加工
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../record/common_problem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    常见问题归档
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    笔记
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../note/ssh/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ssh 笔记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../note/rsync/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    rsync 笔记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../note/modelnet40/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ModelNet40 归纳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../note/useful_linux_app/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux 有用软件归纳
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    论文
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            论文
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../paper/ACE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ACE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../paper/GradCraft/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GradCraft
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../paper/occupancy_network/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Occupancy Network
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../algorithm/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    算法
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            算法
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    归档
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            归档
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../algorithm/archive/2025/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    三月 2025
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    分类
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            分类
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../algorithm/category/algorithm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Algorithm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../algorithm/category/note/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Note
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#modelnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      源头: ModelNet
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-modelnet40-hdf5" class="md-nav__link">
+    <span class="md-ellipsis">
+      预处理版本1: ModelNet40 Hdf5
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-modelnet40-resampled" class="md-nav__link">
+    <span class="md-ellipsis">
+      预处理版本2: ModelNet40 Resampled
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modelnet-250-sample" class="md-nav__link">
+    <span class="md-ellipsis">
+      子集版本: ModelNet 250 Sample
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modelnet40-for-onet" class="md-nav__link">
+    <span class="md-ellipsis">
+      水密网格版本：ModelNet40 for Onet
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="水密网格版本：ModelNet40 for Onet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      问题：不完整的构建过程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#occupancy-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      溯源：Occupancy Networks 的数据集构建过程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      重整：一个完整的构建过程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      一些小坑
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一些小坑">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      类别不一致
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      轴对齐方向不一致
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/the-full/the-full.github.io/edit/master/docs/blog/posts/modelnet40.md" title="编辑此页" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/the-full/the-full.github.io/raw/master/docs/blog/posts/modelnet40.md" title="查看本页的源代码" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="modelnet40">归纳：关于 ModelNet40 数据集<a class="headerlink" href="#modelnet40" title="Permanent link">&para;</a></h1>
+<p><strong>ModelNet40</strong> 是三维对抗攻防领域中一个常用的数据集，许多方法都会在该数据集上进行评估。然而，在阅读相关论文时，发现这个数据集存在许多变体，这导致论文或代码中提到 ModelNet40 数据集时往往具有多义性，需要进行梳理。另一方面，最近在尝试复现点云对抗防御方法 IF-Defense 时，需要在 ModelNet40 的基础上构建一个变体数据集，但在运行作者的脚本时遇到了一些问题，也需要一个位置记录其构建细节。
+因此，本文将记录 ModelNet40 的各种变体及其构建细节，但不会涉及数据集的存储细节，也不会包括如何实现 DataSet 类来读取数据的内容。特别地，本文还会记录一些因为数据集差异导致的坑。</p>
+<details class="info">
+<summary>参考文献</summary>
+<ul>
+<li><a href="https://modelnet.cs.princeton.edu/">ModelNet 介绍</a></li>
+<li><a href="https://github.com/charlesq34/pointnet">PoinNet 仓库描述</a></li>
+<li><a href="https://github.com/charlesq34/pointnet2">PoinNet++ 仓库描述</a></li>
+<li><a href="https://github.com/charlesq34/pointnet2">PoinNet++ 仓库描述</a></li>
+<li><a href="https://github.com/Gorilla-Lab-SCUT/GeoA3/tree/master">GeoA<span class="arithmatex">\(^3\)</span> 仓库描述</a></li>
+<li><a href="https://github.com/Wuziyi616/IF-Defense/tree/main">IF-Defense 仓库描述</a></li>
+</ul>
+</details>
+<!-- more -->
+
+<h2 id="modelnet">源头: ModelNet<a class="headerlink" href="#modelnet" title="Permanent link">&para;</a></h2>
+<p>ModelNet 的<a href="https://modelnet.cs.princeton.edu/">官网</a>包含两个版本：ModelNet10 和 ModelNet40。每个数据代表一个 CAD 模型，以对象文件格式（OFF, Object File Format）存储。其中，ModelNet10 是经过手动对齐的版本，而 ModelNet40 的对齐版本则由论文《Orientation-boosted Voxel Nets for 3D Object Recognition》的作者提供。数据集的组织方式如下图所示：</p>
+<p><a class="glightbox" href="../images/ModelNet%E6%96%87%E4%BB%B6%E6%9E%B6%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="ModelNet数据集文件结构" height="auto" src="../images/ModelNet%E6%96%87%E4%BB%B6%E6%9E%B6%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png" style:="style:" width="100%" /></a></p>
+<p class="caption">ModelNet数据集文件结构</p>
+<details class="tip">
+<summary>构建细节</summary>
+<p>注：在 AI 对论文的总结上修改而来。</p>
+<ol>
+<li><strong>数据收集</strong>：从 3D Warehouse 和 Yobi3D 搜索引擎（索引了 261 个 CAD 模型网站）下载 3D CAD 模型。</li>
+<li><strong>类别选择</strong>：基于 SUN 数据库中的常见对象类别进行查询，选择每个类别至少包含 20 个实例的类别，排除了搜索结果太少的类别。</li>
+<li>
+<p><strong>数据清洗</strong>：</p>
+<ol>
+<li><strong>移除误分类模型</strong>：由 Amazon Mechanical Turk 上的工作人员确认类别标签是否与模型匹配以识别和去除错误分类的模型。</li>
+<li><strong>移除无关对象</strong>：作者手动检查每个3D模型，从每个CAD模型中移除不相关对象（例如，地板、缩略图、站在物体旁边的人物等），确保每个网格模型只包含属于标注类别的一个对象。</li>
+<li><strong>移除不现实的模型</strong>：包括过于简化的模型或仅包含对象图片的模型。</li>
+<li><strong>移除重复模型</strong>：确保数据集中的模型不重复。</li>
+</ol>
+</li>
+</ol>
+</details>
+<h2 id="1-modelnet40-hdf5">预处理版本1: ModelNet40 Hdf5<a class="headerlink" href="#1-modelnet40-hdf5" title="Permanent link">&para;</a></h2>
+<p>该版本是 Charles R. Qi 在 <a href="https://github.com/charlesq34/pointnet">PointNet</a> 中训练模型时使用的。是ModelNet40 数据集的一种预处理版本。在这个版本中，每个模型的数据以 HDF5 格式保存，便于快速读取和处理。每个点云包含 2048 个点，这些点是从模型表面均匀采样的。为了便于网络训练，每个点云都进行了零均值处理，并归一化到单位球面内。</p>
+<details class="tip">
+<summary>构建细节</summary>
+<p>注：在 AI 对论文的总结上修改而来。</p>
+<ol>
+<li><strong>数据集划分</strong>：将数据集分为训练集（9,843 个模型）和测试集（2,468 个模型）。</li>
+<li>
+<p><strong>数据预处理</strong>：</p>
+<ol>
+<li><strong>数据采样</strong>：从每个 3D 模型的网格面上均匀采样 1024 个点，采样基于网格面积进行。</li>
+<li><strong>数据归一化</strong>：将采样的点云归一化到单位球内。</li>
+</ol>
+</li>
+</ol>
+<p>下载链接：http://modelnet.cs.princeton.edu/</p>
+</details>
+<h2 id="2-modelnet40-resampled">预处理版本2: ModelNet40 Resampled<a class="headerlink" href="#2-modelnet40-resampled" title="Permanent link">&para;</a></h2>
+<p>该版本是 Charles R. Qi 在 <a href="https://github.com/charlesq34/pointnet2">PointNet++</a> 中训练模型时使用的。与 PointNet 的版本相比，主要区别在于采样点的数量和处理方式。每个点云包含一万个采样点，并且包含了法线特征（xyz 坐标 + 法线，共 6 维），以更好地捕捉几何特征。</p>
+<details class="tip">
+<summary>构建细节</summary>
+<p>与 ModelNet40 Hdf5 的构建过程类似，主要区别在于采样点数量增加至 10,000 个，并额外添加了法线向量信息。在有曲面信息的前提下，实现起来应该并不困难。</p>
+</details>
+<h2 id="modelnet-250-sample">子集版本: ModelNet 250 Sample<a class="headerlink" href="#modelnet-250-sample" title="Permanent link">&para;</a></h2>
+<p>该版本来自三维点云对抗攻击方向的经典文章 <a href="https://github.com/Gorilla-Lab-SCUT/GeoA3">GeoA<span class="arithmatex">\(^3\)</span></a>，主要用于对抗攻击的评估。由于基于 C&amp;W 攻击的方法计算开销较大，作者从 ModelNet40 Resampled 版本中选取了 250 个样本（10 个类别，每个类别 25 个），并对每个样本重新采样 1024 个点，压缩了数据规模，数据保存在一个 <code>.mat</code> 文件中。由于作者提供了他使用的 <code>.mat</code> 文件，因此在后续的类似方法在评估时都选择采用了 GeoA<span class="arithmatex">\(^3\)</span> 使用的这个子集版本。</p>
+<h2 id="modelnet40-for-onet">水密网格版本：ModelNet40 for Onet<a class="headerlink" href="#modelnet40-for-onet" title="Permanent link">&para;</a></h2>
+<p>该版本来自于三维点云对抗防御方向的经典文章 <code>IF-Defense</code>（<a href="https://github.com/Wuziyi616/IF-Defense/tree/main">github 链接</a>）。作者需要训练一个将点云转化为网格的网络，该网络基于 <code>Occupancy Network</code>（<a href="https://github.com/autonomousvision/occupancy_networks">github 链接</a>）。训练时的监督信号是判断空间中某一点位于模型内部还是外部（参考 <a href="../occupancy_network/">占据网络</a>），因此需要确保训练使用的曲面是封闭的，即水密网格。<code>IF-Defense</code> 的作者参考了这个 <a href="https://github.com/autonomousvision/occupancy_networks/issues/27">issue</a>，使用 <code>Manifold</code>（<a href="https://github.com/hjwdzh/Manifold">github 链接</a>）将网格转化为水密网格，从而简化了预处理步骤。</p>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>作者提供了 <code>Onet/Conv-Onet</code> 模型的预训练权重。如果仅需使用 IF-Defense 进行推理或测试，无需重新构建数据集。以下内容仅适用于需要重新训练模型的情况。</p>
+</div>
+<h3 id="_1">问题：不完整的构建过程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>作者提供了他创建数据集过程中使用的脚本，但这些脚本只存在硬编码路径、无法直接组合使用的问题，见 <code>IF-Defense/ONet/data_proc/build.sh</code> 第 47 行：</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">build.sh</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-47">47</a></span>
+<span class="normal"><a href="#__codelineno-0-48">48</a></span>
+<span class="normal"><a href="#__codelineno-0-49">49</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="c1"># move meshes processed by Manifold to current folder</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Move watertight meshes to in_folder&quot;</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="hll">cp<span class="w"> </span>/home/wzw/WZY/SUMMER/Manifold/data/MN40_watertight/<span class="nv">$c</span>/*.off<span class="w"> </span><span class="nv">$build_path_c</span>/2_watertight
+</span></span></code></pre></div></td></tr></table></div>
+<p>需要先创建水密网格，而在 <code>IF-Defense/ONet/data_proc/make_watertight.py</code> 第 46 行：</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">make_watertight.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-45">45</a></span>
+<span class="normal"><a href="#__codelineno-1-46">46</a></span>
+<span class="normal"><a href="#__codelineno-1-47">47</a></span>
+<span class="normal"><a href="#__codelineno-1-48">48</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45"></a><span class="k">for</span> <span class="n">one_class</span> <span class="ow">in</span> <span class="n">all_class</span><span class="p">:</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46"></a><span class="hll">    <span class="n">class_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_root</span><span class="p">,</span> <span class="n">one_class</span><span class="p">,</span> <span class="s1">&#39;0_in&#39;</span><span class="p">)</span>
+</span></span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47"></a>    <span class="n">all_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">class_root</span><span class="p">)</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48"></a>    <span class="n">all_file</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+</span></code></pre></div></td></tr></table></div>
+<p>这里对 <code>data_root</code> 中每个类别文件夹下的 <code>0_in</code> 进行操作，而不考虑手工创建时，这个文件夹会在 <code>build.sh</code> 的第 11 行创建：</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">build.sh</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="hll">mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$build_path_c</span>/0_in<span class="w"> </span><span class="se">\</span>
+</span></span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">         </span><span class="nv">$build_path_c</span>/1_scaled<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="w">         </span><span class="nv">$build_path_c</span>/1_transform<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">         </span><span class="nv">$build_path_c</span>/2_depth<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="w">         </span><span class="nv">$build_path_c</span>/2_watertight<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="w">         </span><span class="nv">$build_path_c</span>/4_points<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="w">         </span><span class="nv">$build_path_c</span>/4_pointcloud<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="w">         </span><span class="nv">$build_path_c</span>/4_watertight_scaled<span class="w"> </span><span class="se">\</span>
+</span></code></pre></div></td></tr></table></div>
+<p>所以，在没有人工介入时，即使调整好路径设置也会面临 <code>build.sh</code> 和 <code>make_watertight.py</code> 循环依赖的问题，此外，<code>build.sh</code> 中也没有给出 <code>0_in</code> 文件夹下文件的创建过程。</p>
+<h3 id="occupancy-networks">溯源：Occupancy Networks 的数据集构建过程<a class="headerlink" href="#occupancy-networks" title="Permanent link">&para;</a></h3>
+<p>作者的脚本是在从<code>Occupancy Networks</code> 的脚本（见 <code>occupancy_networks/scripts</code>) 修改而来的，原脚本处理的是 <code>ShapeNet</code> 数据集，构建流程如下图所示：</p>
+<p><a class="glightbox" href="../images/Onet-ShapeNet%20%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%9B%BE.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Onet-ShapeNet 构建流程图" src="../images/Onet-ShapeNet%20%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%9B%BE.png" /></a></p>
+<p>核心是三个 bash 脚本（图中灰色部分）：</p>
+<ul>
+<li><code>config.sh</code> 用于设置全局变量，主要是指定路径、类别名称、线程数等；</li>
+<li><code>build.sh</code> 负责将网格数据转化为水密网格；</li>
+<li><code>intsall.sh</code> 负责最终组装数据集并对数据进行切分。</li>
+</ul>
+<p>外部数据（图中浅红色部分）包含两部分，一个是其他工作的预处理数据集（不重要），另一个是 <code>0_in</code>，它由 ModelNet40 源数据集的 <code>.off</code> 文件构成，将文件按类别分到不同文件夹下。我推测这里是使用了整个数据集的模型，因为最后创建数据集时是从所有数据中划分测试集，而不是沿用原数据集的测试集。</p>
+<p>上图中 <code>CHOY2016_PATH</code> 用于指定 3D-R2N2 (Choy et al. 2016, <a href="https://arxiv.org/abs/1604.00449">arixv 链接</a>, <a href="https://github.com/chrischoy/3D-R2N2">github 链接</a>) 预处理的数据集的路径，对于我们目标的任务场景而言，并不需要这部分信息，因此可以移除。另一方面，我们不需要深度图像信息，而创建水密网格的部分可以用 <code>Manifold</code> 替代，进一步规避了一些额外的预处理步骤。简化后的流程图如下：</p>
+<p><a class="glightbox" href="../images/Onet-ModelNet40%20%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%9B%BE.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Onet-ModelNet40 构建流程图" src="../images/Onet-ModelNet40%20%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B%E5%9B%BE.png" /></a></p>
+<h3 id="_2">重整：一个完整的构建过程<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>三个核心脚本的运行依赖于 Manifold 和几个 python 文件，后者除了依赖第三方包还依赖于 Occupancy Networks 作者写的 <code>im2mesh</code> 包，需要运行 <code>setup.py</code> 脚本安装。此外，还需要下载相应数据集并在 <code>config.sh</code> 中进行正确的配置。</p>
+<p>配置完成后，先进行水密曲面的生成，然后在和原来一样依次运行 <code>build.sh</code> 和 <code>install.sh</code> 脚本，也可以将生成部分合并到 <code>build.sh</code> 中，反正按流程来就行。水密曲面的生成在 IF-Defense 作者提供的 <code>make_watertight.py</code> 脚本上稍微改改就行，不做赘述。</p>
+<details class="tip">
+<summary>安装 im2mesh</summary>
+<p>简单来说，整个安装过程就是两步：</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">$ </span>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>--inplace
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="gp">$ </span>python<span class="w"> </span>install
+</span></code></pre></div>
+<p>这两行命令起到的效果就是依次编译 <code>im2mesh.utils</code> 下的 <code>lib_*</code> 文件并构建相应模块，<code>--inplace</code> 指定动态链接库放在 lib* 所在的文件夹下，之后可以使用 python 调用相关接口。需要注意的是，<code>sample_mesh.py</code> 中使用的 <code>libmesh</code> 没有出现在 IF-Defense 作者提供的 <code>im2mesh</code> 中，可能作者使用其他方法替代了 <code>check_mesh_contains</code> 函数（我对这个不太了解），因此这里需要从原仓库中借过来这部分代码（<code>setup.py</code> 也要补充）。</p>
+</details>
+<details class="tip">
+<summary>how to do better</summary>
+<p>这里讨论一下 <code>sample_mesh.py</code> 中的第 9 行的 <strong>TODO</strong> 怎么进行。按原来的 <code>setup.py</code> 脚本安装的话， <code>libmesh</code> 中其实并不包含 <code>check_mesh_contains</code> 函数，只有编译构建的模块 <code>triangle_hash</code>，或者说 <code>check_mesh_contains</code> 函数没有被 "安装"。作者的解决方案是硬编码包搜索路径，拓展 <code>PYTHONPATH</code> 从而可以找到这个函数。这个方案的问题是 <code>sample_mesh.py</code> 和 <code>im2mesh</code> 的相对位置被硬编码，产生了不必要的耦合。</p>
+<p>解决方法是简单的，问题产生的原因是 <code>setup.py</code> 中只指明了 <code>libmesh.triangle_hash</code> 是一个模块，而没有指明 <code>libmesh</code> 是一个包，因此只需要在 <code>setup.py</code> 的 <code>setup</code> 函数中增加一行 <code>packages=find_packages()</code> 让程序发现 <code>libmesh</code> 是一个包再重新安装就可以了。</p>
+</details>
+<h2 id="_3">一些小坑<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>TODO</p>
+<h3 id="_4">类别不一致<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<h3 id="_5">轴对齐方向不一致<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/the-full" target="_blank" rel="noopener" title="zhazi on github" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.tooltips", "navigation.tabs", "navigation.instant", "navigation.indexes", "navigation.top", "navigation.tracking"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../../_static/js/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
